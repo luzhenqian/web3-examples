@@ -8,12 +8,6 @@ import {
   useState,
 } from "react";
 
-declare global {
-  interface Window {
-    ethereum: any;
-  }
-}
-
 type IWalletCtx = {
   walletProvider: any;
   setWalletProvider: (walletProvider: any) => void;
@@ -44,7 +38,9 @@ export default function Wallet() {
   const [refresh, setRefresh] = useState<boolean>(false);
 
   useEffect(() => {
-    setWalletProvider(new ethers.providers.Web3Provider(window.ethereum));
+    setWalletProvider(
+      new ethers.providers.Web3Provider(window.ethereum as any)
+    );
   }, []);
 
   const showMessage = (message: string) => {
@@ -78,8 +74,8 @@ export default function Wallet() {
     >
       <div className="flex flex-col gap-4 p-4">
         <Dialog open={msgIsOpen} as={"div"} onClose={() => setMsgIsOpen(false)}>
-          <div className="fixed flex justify-center items-center w-full top-2">
-            <Dialog.Panel className="inline-flex flex-col bg-green-400 text-slate-600 p-4 shadow-xl rounded-3xl">
+          <div className="fixed flex items-center justify-center w-full top-2">
+            <Dialog.Panel className="inline-flex flex-col p-4 bg-green-400 shadow-xl text-slate-600 rounded-3xl">
               <Dialog.Title>{msg}</Dialog.Title>
             </Dialog.Panel>
           </div>
@@ -115,7 +111,7 @@ function Connect() {
 
   const connectToMetamask = async () => {
     try {
-      await window.ethereum.enable();
+      await (window.ethereum as any).enable();
       const accounts = await walletProvider.send("eth_requestAccounts", []);
       const network = await walletProvider.getNetwork();
       const balance = await walletProvider.getBalance(accounts[0]);
@@ -147,7 +143,7 @@ function Connect() {
   }
 
   return (
-    <div className="flex justify-end items-center gap-2">
+    <div className="flex items-center justify-end gap-2">
       <h1 className="text-end">Hello, {account}</h1>
       <button className="btn" onClick={disconnect}>
         disconnect
@@ -162,7 +158,7 @@ function Details() {
     return null;
   }
   return (
-    <div className="flex flex-col gap-4 w-full bg-slate-800 text-white p-4 rounded-md">
+    <div className="flex flex-col w-full gap-4 p-4 text-white rounded-md bg-slate-800">
       <div className="flex justify-between">
         <div className="text-2xl font-thin">balance</div>
         <div>network: {networkName}</div>
@@ -213,7 +209,7 @@ function Transfer() {
 
   return (
     <div className="flex flex-col gap-4 mt-4">
-      <div className="font-bold text-4xl">Transfer</div>
+      <div className="text-4xl font-bold">Transfer</div>
       {transferring ? (
         <div className="flex flex-col items-center gap-4">
           <div className="text-3xl">transferring...</div>
