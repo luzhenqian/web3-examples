@@ -1,36 +1,15 @@
 import { useState } from "react";
 import {
-  WagmiConfig,
-  createClient,
-  configureChains,
-  mainnet,
-  useConnect,
-  useAccount,
-  useEnsAvatar,
-  useEnsName,
-  useDisconnect,
   usePrepareContractWrite,
   useContractWrite,
   useWaitForTransaction,
-  goerli,
   useContractRead,
   useContractReads,
   useContractEvent,
-  useNetwork,
 } from "wagmi";
-
-import { alchemyProvider } from "wagmi/providers/alchemy";
-import { publicProvider } from "wagmi/providers/public";
-
-import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
-import { InjectedConnector } from "wagmi/connectors/injected";
-import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
-
 import {
   Alert,
   Button,
-  ChakraProvider,
   Heading,
   Input,
   Spinner,
@@ -38,65 +17,10 @@ import {
 } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { abi } from "../abi/NoahToken.json";
-
-const { chains, provider, webSocketProvider } = configureChains(
-  [
-    mainnet,
-    goerli,
-    {
-      id: 1337,
-      name: "Local",
-      network: "Local",
-      nativeCurrency: {
-        name: "Noah",
-        symbol: "NOAH",
-        decimals: 18,
-      },
-      rpcUrls: {
-        default: {
-          http: ["http://127.0.0.1:7545"],
-        },
-      },
-    },
-  ],
-  [
-    alchemyProvider({
-      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY as string,
-    }),
-    publicProvider(),
-  ]
-);
-
-const client = createClient({
-  autoConnect: true,
-  connectors: [
-    new MetaMaskConnector({ chains }),
-    new CoinbaseWalletConnector({
-      chains,
-      options: {
-        appName: "wagmi",
-      },
-    }),
-    new WalletConnectConnector({
-      chains,
-      options: {
-        qrcode: true,
-      },
-    }),
-    new InjectedConnector({
-      chains,
-      options: {
-        name: "Injected",
-        shimDisconnect: true,
-      },
-    }),
-  ],
-  provider,
-  webSocketProvider,
-});
+import Profile from "../components/Profile";
 
 const contract = {
-  address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`,
+  address: process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS as `0x${string}`,
   abi,
 };
 
@@ -104,67 +28,19 @@ export default dynamic(() => Promise.resolve(NoahToken), { ssr: false });
 
 function NoahToken() {
   return (
-    <ChakraProvider>
-      <WagmiConfig client={client}>
-        <div className="p-8 flex flex-col gap-8">
-          <Profile />
-          <Detail />
-          <BalanceOf />
-          <Transfer />
-          <Allowance />
-          <Approve />
-          <TransferFrom />
-        </div>
-      </WagmiConfig>
-    </ChakraProvider>
-  );
-}
-
-function Profile() {
-  const { address, connector, isConnected } = useAccount();
-  const { data: ensAvatar } = useEnsAvatar();
-  const { data: ensName } = useEnsName();
-  const network = useNetwork();
-  console.log(network, "network");
-  const { connect, connectors, error, isLoading, pendingConnector } =
-    useConnect();
-  const { disconnect } = useDisconnect();
-
-  if (isConnected) {
-    return (
-      <div className="flex flex-col gap-1">
-        {ensAvatar && <img src={ensAvatar} alt="ENS Avatar" />}
-        <div>{ensName ? `${ensName} (${address})` : address}</div>
-        <div>连接到 {connector?.name}</div>
-
-        <Button onClick={() => disconnect()}>断开连接</Button>
-      </div>
-    );
-  }
-  return (
-    <div className="flex gap-2">
-      {connectors.map((connector) => (
-        <Button
-          key={connector.id}
-          disabled={!connector.ready}
-          onClick={() => connect({ connector })}
-        >
-          {connector.name}
-          {!connector.ready && " (不支持)"}
-          {isLoading && connector.id === pendingConnector?.id && " (连接中)"}
-        </Button>
-      ))}
-
-      {error && <Alert status="error">{error.message}</Alert>}
+    <div className="flex flex-col gap-8 p-8">
+      <Profile />
+      <Detail />
+      <BalanceOf />
+      <Transfer />
+      <Allowance />
+      <Approve />
+      <TransferFrom />
     </div>
   );
 }
 
 function Detail() {
-  const contract = {
-    address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`,
-    abi,
-  };
   const { data, error, isError, isLoading } = useContractReads({
     contracts: [
       {
@@ -272,21 +148,19 @@ function Transfer() {
   const {
     error: transactionError,
     isLoading: isTransactionLoading,
-    isSuccess,
     isError: isTransactionError,
   } = useWaitForTransaction({
     hash: data?.hash,
+    onSuccess: () => {
+      toast({
+        title: "转账成功",
+        description: `转账成功，交易哈希：${data?.hash}`,
+        status: "success",
+      });
+    },
   });
 
   const toast = useToast();
-
-  if (isSuccess) {
-    toast({
-      title: "转账成功",
-      description: `转账成功，交易哈希：${data?.hash}`,
-      status: "success",
-    });
-  }
 
   return (
     <div className="flex flex-col gap-2">

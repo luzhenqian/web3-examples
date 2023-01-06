@@ -1,37 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-
-const examples = [
-  {
-    name: "简单钱包",
-    description:
-      "使用 ethers.js 连接 Metamask，实现了连接、断开、查询余额、刷新余额、转账等加密钱包的极简功能。麻雀虽小，五脏俱全。适合初学者学习。",
-    url: "/sample-wallet",
-    technologyStack: [
-      "next.js",
-      "react",
-      "tailwindcss",
-      "headless-ui",
-      "ethers.js",
-    ],
-  },
-  {
-    name: "Noah 代币",
-    description:
-      "基于 ERC20 协议实现的 Noah 代币。实现了 ERC20 的所有功能。包含了代币的发行、转账、查询余额、查询总量、授权、授权转账等功能。适合全栈开发者学习。",
-    url: "/noah-token",
-    technologyStack: [
-      "next.js",
-      "react",
-      "tailwindcss",
-      "chakra-ui",
-      "wagmi",
-      "solidity",
-      "truffle",
-      "ganache",
-    ],
-  },
-];
+import examples from "../examples.json";
 
 export default function Home() {
   return (
