@@ -352,7 +352,7 @@ function TransferFrom() {
       <Input
         value={to}
         onInput={(e) => setTo((e.target as any).value)}
-        placeholder="输入咬转账的地址"
+        placeholder="输入要转账的地址"
       />
       <Input
         value={amount}
