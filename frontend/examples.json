@@ -27,8 +27,8 @@
     ]
   },
   {
-    "name": "Noah 代币水龙头",
-    "description": "用于领取 Noah 代币的水龙头，实现了简单的代币领取功能。这个版本的实现需要连接钱包，并由用户支付 gas 才可以领取。适合全栈开发者学习。",
+    "name": "Noah 代币水龙头纯智能合约版本",
+    "description": "用于领取 Noah 代币的水龙头，实现了简单的代币领取功能。这个版本的实现需要用户连接钱包，并由用户支付 gas 才可以领取。适合全栈开发者学习。",
     "url": "/faucet",
     "technologyStack": [
       "next.js",
@@ -39,6 +39,24 @@
       "solidity",
       "truffle",
       "ganache"
+    ]
+  },
+  {
+    "name": "Noah 代币水龙头后端配合智能合约版本",
+    "description": "用于领取 Noah 代币的水龙头，实现了简单的代币领取功能。这个版本的实现不需要用户连接钱包，由后端账户支付负责 gas 费。适合全栈开发者学习。",
+    "url": "/faucet",
+    "technologyStack": [
+      "next.js",
+      "react",
+      "tailwindcss",
+      "chakra-ui",
+      "wagmi",
+      "solidity",
+      "truffle",
+      "ganache",
+      "prisma",
+      "nextauth.js",
+      "supabase"
     ]
   }
 ]

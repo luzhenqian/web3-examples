@@ -6,22 +6,29 @@
     "dev": "next dev -p 4322",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate": "dotenv -e .env.local -- npx prisma migrate dev",
+    "generate": "dotenv -e .env.local -- npx prisma generate",
+    "initial:data": "dotenv -e .env.local -- npx tsx ./scripts/initialAdmin.ts"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.4.6",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@headlessui/react": "^1.7.7",
+    "@next-auth/prisma-adapter": "^1.0.5",
     "@next/font": "13.1.1",
+    "@prisma/client": "^4.8.1",
     "@types/node": "18.11.18",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.10",
+    "axios": "^1.2.2",
     "eslint": "8.31.0",
     "eslint-config-next": "13.1.1",
     "ethers": "^5.7.2",
     "framer-motion": "^8.1.7",
     "next": "13.1.1",
+    "next-auth": "^4.18.7",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "typescript": "4.9.4",
@@ -29,7 +36,9 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
+    "dotenv-cli": "^6.0.0",
     "postcss": "^8.4.20",
+    "prisma": "^4.8.1",
     "tailwindcss": "^3.2.4"
   }
 }

@@ -14,6 +14,7 @@ import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
+import { SessionProvider } from "next-auth/react";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
@@ -71,12 +72,17 @@ const client = createClient({
   webSocketProvider,
 });
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) {
   return (
-    <WagmiConfig client={client}>
-      <ChakraProvider>
-        <Component {...pageProps} />
-      </ChakraProvider>
-    </WagmiConfig>
+    <SessionProvider session={session}>
+      <WagmiConfig client={client}>
+        <ChakraProvider>
+          <Component {...pageProps} />
+        </ChakraProvider>
+      </WagmiConfig>
+    </SessionProvider>
   );
 }
