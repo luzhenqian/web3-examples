@@ -40,7 +40,9 @@
  *
  * https://trufflesuite.com/docs/truffle/getting-started/using-the-truffle-dashboard/
  */
-require('dotenv').config();
+require('dotenv').config({
+  path: './.env.local'
+});
 
 const { PRIVATE_KEY, PROJECT_ID } = process.env;
 
