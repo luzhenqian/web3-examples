@@ -44,7 +44,7 @@
   {
     "name": "Noah 代币水龙头后端配合智能合约版本",
     "description": "用于领取 Noah 代币的水龙头，实现了简单的代币领取功能。这个版本的实现不需要用户连接钱包，由后端账户支付负责 gas 费。适合全栈开发者学习。",
-    "url": "/faucet2",
+    "url": "/faucet-with-backend",
     "technologyStack": [
       "next.js",
       "react",

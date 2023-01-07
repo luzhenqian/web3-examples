@@ -1,8 +1,8 @@
-import { FaucetConfig } from "@prisma/client";
-import { ethers } from "ethers";
 import { NextApiRequest, NextApiResponse } from "next";
-import { abi } from "../../../abi/NoahToken.json";
+import { FaucetConfig } from "@prisma/client";
 import { prisma } from "../../../prisma/db";
+import { unstable_getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]";
 
 type Response<T> = {
   code: number;
@@ -46,6 +46,10 @@ export default async function handler(
   }
 
   if (req.method === "POST") {
+    const session = await unstable_getServerSession(req, res, authOptions);
+    if (!session) {
+      return res.status(401).end();
+    }
     const amount = req.body.amount;
     if (!amount) {
       return res.status(400).json({

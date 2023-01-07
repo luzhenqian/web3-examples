@@ -23,22 +23,31 @@ function Withdraw() {
   const toast = useToast();
   const [address, setAddress] = useState("");
   const [amountEachTime, setAmountEachTime] = useState(0);
+  const [getConfigIsLoading, setGetConfigIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     (async () => {
+      setGetConfigIsLoading(true);
       try {
         const res = await axios({
           url: "/api/faucet/config",
           method: "GET",
         });
         setAmountEachTime(res.data.amount);
-      } catch (err: any) {}
+      } catch (err: any) {
+        setIsError(true);
+      } finally {
+        setGetConfigIsLoading(false);
+      }
     })();
   }, []);
 
   const withdraw = async () => {
+    setIsLoading(true);
     try {
-      const res = await axios({
+      await axios({
         url: "/api/faucet/withdraw",
         method: "POST",
         data: { address },
@@ -58,8 +67,14 @@ function Withdraw() {
         status: "error",
         duration: 3000,
       });
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (getConfigIsLoading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -78,19 +93,11 @@ function Withdraw() {
         onChange={(e) => setAddress(e.target.value)}
       ></Input>
 
-      <Button
-        // disabled={isLoading}
-        // isLoading={isLoading}
-        // onClick={() => write?.()}
-        onClick={withdraw}
-      >
+      <Button disabled={isLoading} isLoading={isLoading} onClick={withdraw}>
         领取
       </Button>
 
-      {/* {isPrepareError && <Alert status="error">{`该地址目前不可以领取`}</Alert>}
-      {isWriteError || isWaitTransactionError ? (
-        <Alert status="error">{`领取失败`}</Alert>
-      ) : null} */}
+      {isError && <Alert status="error">{`当前服务不可用`}</Alert>}
     </div>
   );
 }
@@ -107,8 +114,6 @@ function Manager() {
           url: "/api/faucet/config",
           method: "GET",
         });
-        console.log(res, "res");
-
         setAmount(res.data.amount);
       } catch (err: any) {
         if (session) {
@@ -120,7 +125,7 @@ function Manager() {
         }
       }
     })();
-  }, []);
+  }, [session, toast]);
 
   const setAmountApi = async () => {
     try {
@@ -170,7 +175,7 @@ function Manager() {
 
           <div>
             {session.user.role === "ADMIN" ? (
-              <div>
+              <div className="flex flex-col gap-2">
                 <Input
                   type="number"
                   value={amount}
