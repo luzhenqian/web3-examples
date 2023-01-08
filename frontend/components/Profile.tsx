@@ -11,8 +11,11 @@ import {
 
 const supportedChainIds = [
   5, // Goerli
-  1337, // Localhost
 ];
+
+if (process.env.NEXT_PUBLIC_ENV === "development") {
+  supportedChainIds.push(1337); // Localhost
+}
 
 export default function Profile() {
   const { address, connector, isConnected } = useAccount();
