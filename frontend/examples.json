@@ -58,5 +58,20 @@
       "nextauth.js",
       "supabase"
     ]
+  },
+  {
+    "name": "Noah 代币空投批量转账",
+    "description": "用于空投场景的批量转账。支持一（地址）对一（数量）和多（地址）对一（数量），适合全栈开发者学习。",
+    "url": "/airdrop",
+    "technologyStack": [
+      "next.js",
+      "react",
+      "tailwindcss",
+      "chakra-ui",
+      "wagmi",
+      "solidity",
+      "truffle",
+      "ganache"
+    ]
   }
 ]
