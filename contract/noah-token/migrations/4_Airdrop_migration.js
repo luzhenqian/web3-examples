@@ -1,7 +1,7 @@
 const NoahToken = artifacts.require("NoahToken");
 const Faucet = artifacts.require("Faucet");
 const Airdrop = artifacts.require("Airdrop");
-const fs = require("fs");
+const fs = require("fs-extra");
 const path = require("path");
 
 module.exports = function (deployer) {
@@ -15,9 +15,16 @@ module.exports = function (deployer) {
       Faucet.address,
       Airdrop.address
     );
-    // TODO: 复制 ABI 到前端
+    copyAbiFile();
   });
+}
 
+function copyAbiFile() {
+  const srcPath = path.resolve(__dirname, `../build/contracts/`)
+  const destPath = path.resolve(__dirname, `../../../frontend/abi/`)
+  const res = fs.copySync(srcPath, destPath, {
+    overwrite: true,
+  })
 }
 
 function updateEnvFile(tokenAddress, faucetAddress, airdropAddress) {
