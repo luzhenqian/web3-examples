@@ -12,6 +12,19 @@
     ]
   },
   {
+    "name": "钱包地址生成器",
+    "description": "使用 ethers.js 批量生成随机的钱包地址，支持 Excel 导出。适合初学者学习。",
+    "url": "/wallet-generator",
+    "technologyStack": [
+      "next.js",
+      "react",
+      "tailwindcss",
+      "chakra-ui",
+      "ethers.js",
+      "xlsx"
+    ]
+  },
+  {
     "name": "Noah 代币",
     "description": "基于 ERC20 协议实现的 Noah 代币。实现了 ERC20 的所有功能。包含了代币的发行、转账、查询余额、查询总量、授权、授权转账等功能。适合全栈开发者学习。",
     "url": "/noah-token",
