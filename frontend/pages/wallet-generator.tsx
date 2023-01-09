@@ -26,7 +26,6 @@ export default function WalletGenerator() {
         const wallet = ethers.Wallet.createRandom();
         _wallets.push(wallet);
       }
-      console.log(_wallets);
       setWallets(_wallets);
       setIsLoading(false);
     }, 300);
