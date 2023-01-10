@@ -21,19 +21,19 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
         owner = msg.sender;
         _name = initName;
         _symbol = initSymbol;
-        addMinter(msg.sender); // 添加合约所有者为 NFT 发行者
+        approveMinter(msg.sender, true); // 添加合约所有者为 NFT 发行者
     }
 
-    // 添加 NFT 发行者
-    function addMinter(address minter) public {
+    // 授权或取消授权某个地址的铸币权
+    function approveMinter(address minter, bool approved) public {
         require(msg.sender == owner, "NoahNFT: only owner can add minter");
-        minters[minter] = true;
+        minters[minter] = approved;
     }
 
-    // 移除 NFT 发行者
-    function removeMinter(address minter) public {
-        require(msg.sender == owner, "NoahNFT: only owner can remove minter");
-        minters[minter] = false;
+    // 检查某个地址是否为 NFT 发行者
+    function isMinter(address minter) public view returns (bool) {
+        require(minter != address(0), "NoahNFT: minter is the zero address");
+        return minters[minter];
     }
 
     // 检查合约是否实现了某个接口
@@ -104,7 +104,7 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
                 isApprovedForAll(tokenOwner, msg.sender),
             "ERC721: approve caller is not owner nor approved for all"
         );
-        //  NFT 持有者地址不能为0
+        // NFT 持有者不能将 NFT 授权给自己
         require(
             tokenOwner == msg.sender,
             "ERC721: approve caller is not owner nor approved for all"
@@ -115,7 +115,7 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
         require(tokenOwner != to, "ERC721: approve to caller");
         // 授权者已经将所有 NFT 授权给被授权者
         require(
-            isApprovedForAll(msg.sender, to),
+            !isApprovedForAll(tokenOwner, to),
             "ERC721: approve caller is not owner nor approved for all"
         );
         // 将 NFT 授权给被授权者
