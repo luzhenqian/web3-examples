@@ -21,6 +21,7 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
         owner = msg.sender;
         _name = initName;
         _symbol = initSymbol;
+        addMinter(msg.sender); // 添加合约所有者为 NFT 发行者
     }
 
     // 添加 NFT 发行者
@@ -85,13 +86,13 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
 
     // 查询某个 NFT 的持有者 内部函数
     function _ownerOf(uint256 tokenId) internal view returns (address) {
-        address owner = owners[tokenId];
+        address tokenOwner = owners[tokenId];
         //  NFT 持有者地址不能为0
         require(
-            owner != address(0),
+            tokenOwner != address(0),
             "ERC721: owner query for nonexistent token"
         );
-        return owner;
+        return tokenOwner;
     }
 
     // 授权单个 NFT
@@ -190,6 +191,11 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
         uint256 tokenId
     ) internal {
         address tokenOwner = owners[tokenId]; //  NFT 持有者
+        // from 必须是 NFT 持有者
+        require(
+            tokenOwner == from,
+            "ERC721: transfer of token that is not own"
+        );
         // 被授权者地址不能为0
         require(to != address(0), "ERC721: transfer to the zero address");
         // 合约调用者必须是 NFT 持有者或者 NFT 持有者已经将所有 NFT 授权给合约调用者或者 NFT 持有者已经将该 NFT 授权给合约调用者
@@ -202,11 +208,11 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
         // 撤销 NFT 授权
         _clearApproval(tokenId);
         // 同步 NFT 持有者持币数量
-        _removeTokenFrom(tokenOwner, tokenId);
+        _removeTokenFrom(from, tokenId);
         // 转移 NFT
         _addTokenTo(to, tokenId);
         // 触发转移 NFT 事件
-        emit Transfer(tokenOwner, to, tokenId);
+        emit Transfer(from, to, tokenId);
     }
 
     // 撤销 NFT 授权
@@ -340,13 +346,13 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
     ) internal {
         // 合约调用者必须是铸造者
         require(minters[msg.sender], "ERC721: caller is not the minter");
-        // 合约调用者必须是合约拥有者
-        require(msg.sender == owner, "ERC721: caller is not the owner");
         // 被授权者地址不能为0
         require(to != address(0), "ERC721: mint to the zero address");
 
         // 调用转移 NFT
-        _transfer(address(0), to, tokenId);
+        _addTokenTo(to, tokenId);
+        // 触发 NFT 转移事件
+        emit Transfer(address(0), to, tokenId);
 
         // 设置 Token URI
         _setTokenURI(tokenId, _tokenURI);
