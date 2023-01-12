@@ -15,6 +15,7 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
     string private _name; //  NFT 名称
     string private _symbol; //  NFT 符号
     mapping(uint256 => string) private _tokenURIs; //  NFT 元数据  NFT id => 元数据
+    uint256 public currentTokenId = 0; // 当前 NFT id
 
     // 构造函数
     constructor(string memory initName, string memory initSymbol) {
@@ -243,7 +244,6 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
     function _checkOnERC721Received(
         address from,
         address to,
-        uint256 tokenId,
         bytes memory _data
     ) internal returns (bool) {
         // 如果被授权者不是合约则表示接收成功
@@ -255,7 +255,7 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
             IERC721Receiver(to).onERC721Received(
                 msg.sender,
                 from,
-                tokenId,
+                currentTokenId,
                 _data
             )
         returns (bytes4 retval) {
@@ -304,58 +304,60 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
         _transfer(from, to, tokenId);
         // 检查被授权者是否接收 NFT
         require(
-            _checkOnERC721Received(from, to, tokenId, data),
+            _checkOnERC721Received(from, to, data),
             "ERC721: transfer to non ERC721Receiver implementer"
         );
     }
 
     // 铸造 NFT
-    function mint(
-        address to,
-        uint256 tokenId,
-        string memory _tokenURI
-    ) public {
+    function mint(address to, string memory _tokenURI)
+        public
+        returns (uint256)
+    {
         // 铸造 NFT
-        _mint(to, tokenId, _tokenURI);
+        return _mint(to, _tokenURI);
     }
 
     // 安全铸造 NFT  无 data 参数
-    function safeMint(
-        address to,
-        uint256 tokenId,
-        string calldata _tokenURI
-    ) public {
-        _safeMint(to, tokenId, _tokenURI, "");
+    function safeMint(address to, string calldata _tokenURI)
+        public
+        returns (uint256)
+    {
+        return _safeMint(to, _tokenURI, "");
     }
 
     // 安全铸造 NFT  有 data 参数
     function safeMint(
         address to,
-        uint256 tokenId,
         string calldata _tokenURI,
         bytes calldata data
-    ) public {
-        _safeMint(to, tokenId, _tokenURI, data);
+    ) public returns (uint256) {
+        return _safeMint(to, _tokenURI, data);
     }
 
     // 铸造 NFT  内部函数
-    function _mint(
-        address to,
-        uint256 tokenId,
-        string memory _tokenURI
-    ) internal {
+    function _mint(address to, string memory _tokenURI)
+        internal
+        returns (uint256)
+    {
         // 合约调用者必须是铸造者
         require(minters[msg.sender], "ERC721: caller is not the minter");
         // 被授权者地址不能为0
         require(to != address(0), "ERC721: mint to the zero address");
 
+        // 更新当前 NFT ID
+        currentTokenId += 1;
+
         // 调用转移 NFT
-        _addTokenTo(to, tokenId);
+        _addTokenTo(to, currentTokenId);
         // 触发 NFT 转移事件
-        emit Transfer(address(0), to, tokenId);
+        emit Transfer(address(0), to, currentTokenId);
 
         // 设置 Token URI
-        _setTokenURI(tokenId, _tokenURI);
+        _setTokenURI(currentTokenId, _tokenURI);
+
+        // 返回当前 NFT ID
+        return currentTokenId;
     }
 
     // 设置 Token URI 内部函数
@@ -367,17 +369,16 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
     // 安全铸造 NFT  内部函数
     function _safeMint(
         address to,
-        uint256 tokenId,
         string memory _tokenURI,
         bytes memory _data
-    ) internal {
-        // 调用铸造 NFT
-        _mint(to, tokenId, _tokenURI);
+    ) internal returns (uint256) {
         // 检查被授权者是否接收 NFT
         require(
-            _checkOnERC721Received(address(0), to, tokenId, _data),
+            _checkOnERC721Received(address(0), to, _data),
             "ERC721: transfer to non ERC721Receiver implementer"
         );
+        // 调用铸造 NFT
+        return _mint(to, _tokenURI);
     }
 
     // 销毁 NFT
