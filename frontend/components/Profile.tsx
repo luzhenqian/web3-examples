@@ -1,4 +1,5 @@
 import { Alert, Button } from "@chakra-ui/react";
+import dynamic from "next/dynamic";
 import {
   useAccount,
   useConnect,
@@ -17,7 +18,9 @@ if (process.env.NEXT_PUBLIC_ENV === "development") {
   supportedChainIds.push(1337); // Localhost
 }
 
-export default function Profile() {
+export default dynamic(() => Promise.resolve(Profile), { ssr: false });
+
+function Profile() {
   const { address, connector, isConnected } = useAccount();
   const { data: ensAvatar } = useEnsAvatar();
   const { data: ensName } = useEnsName();
