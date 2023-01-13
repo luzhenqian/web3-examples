@@ -15,6 +15,8 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
 import { SessionProvider } from "next-auth/react";
+import { SWRConfig, SWRConfiguration } from "swr";
+import axios from "axios";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
@@ -72,6 +74,15 @@ const client = createClient({
   webSocketProvider,
 });
 
+const fetcher = async (url: string) => {
+  return (await axios.get(url)).data;
+};
+
+const options: SWRConfiguration = {
+  refreshInterval: 3000,
+  fetcher,
+};
+
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
@@ -80,7 +91,9 @@ export default function App({
     <SessionProvider session={session}>
       <WagmiConfig client={client}>
         <ChakraProvider>
-          <Component {...pageProps} />
+          <SWRConfig value={options}>
+            <Component {...pageProps} />
+          </SWRConfig>
         </ChakraProvider>
       </WagmiConfig>
     </SessionProvider>

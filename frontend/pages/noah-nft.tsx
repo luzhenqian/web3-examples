@@ -7,6 +7,9 @@ import {
   FormLabel,
   Heading,
   Input,
+  List,
+  ListIcon,
+  ListItem,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -39,7 +42,7 @@ import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import Image from "next/image";
 import useSWR from "swr";
-import { NFT } from "@prisma/client";
+import { MinterRequest, NFT } from "@prisma/client";
 import dayjs from "dayjs";
 import dynamic from "next/dynamic";
 
@@ -83,7 +86,14 @@ export default function NoahNFT() {
       <Profile></Profile>
       <Heading>Noah NFT</Heading>
       {address && <NFTList />}
-      {isMinter ? <Mint /> : <MinterRequest />}
+      {isMinter ? (
+        <Mint />
+      ) : (
+        <>
+          <MinterRequest />
+          <MinterRequestList />
+        </>
+      )}
     </div>
   );
 }
@@ -100,19 +110,33 @@ function MinterRequest() {
     reason: string;
   }) => {
     setIsRequesting(true);
-    const res = await axios.post("/api/nft/minter-request", {
-      ...values,
-      address,
-    });
-    if (res.status === 200) {
-      toast({
-        title: "申请成功",
-        description: "我们会尽快处理您的申请",
-        status: "success",
+    try {
+      const res = await axios.post("/api/nft/minter-request", {
+        ...values,
+        address,
       });
+      if (res.status === 200) {
+        toast({
+          title: "申请成功",
+          description: "我们会尽快处理您的申请",
+          status: "success",
+        });
+      }
+    } catch (e: any) {
+      console.log(e, "e");
+      let description = "请稍后再试";
+      if (e.response.status === 400) {
+        description = e.response.data.message;
+      }
+      toast({
+        title: "申请失败",
+        description,
+        status: "error",
+      });
+    } finally {
+      setIsRequesting(false);
+      onClose();
     }
-    setIsRequesting(false);
-    onClose();
   };
 
   return (
@@ -198,6 +222,33 @@ function MinterRequest() {
           </Button>
         </div>
       </Alert>
+    </div>
+  );
+}
+
+function MinterRequestList() {
+  const { address } = useAccount();
+  const { data, isLoading } = useSWR<MinterRequest[]>(
+    address ? `/api/nft/minter-request?address=${address}` : null
+  );
+  return (
+    <div>
+      <Heading>我的申请记录</Heading>
+      {isLoading && <Spinner />}
+      <List spacing={3} className="my-2">
+        {data?.map((item) => {
+          return (
+            <ListItem key={item.id}>
+              <div className="flex items-center gap-4">
+                <span>
+                  申请时间：{dayjs(item.createdAt).format("YYYY-MM-DD")}
+                </span>
+                <span>申请状态：{item.status}</span>
+              </div>
+            </ListItem>
+          );
+        })}
+      </List>
     </div>
   );
 }
@@ -398,12 +449,7 @@ const NFTList = dynamic(() => Promise.resolve(_NFTList), {
 // 当前账户的 NFT 列表
 function _NFTList() {
   const { address } = useAccount();
-  const { data, error, isLoading } = useSWR<NFT[]>(
-    `/api/nft/${address}`,
-    async (url) => {
-      return (await axios.get(url)).data;
-    }
-  );
+  const { data, error, isLoading } = useSWR<NFT[]>(`/api/nft/${address}`);
 
   const contracts = (data || []).map((nft: NFT) => {
     return {
