@@ -45,7 +45,7 @@ export default async function handler(
 
       const { IpfsHash } = await pinata.pinFileToIPFS(stream, {
         pinataMetadata: {
-          name: `Noah-NFT-${Date.now()}-${Math.random()}`,
+          name: `Noah-NFT-Image-${Date.now()}-${Math.random()}`,
         },
       });
 

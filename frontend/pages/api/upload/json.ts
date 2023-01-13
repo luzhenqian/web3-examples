@@ -26,7 +26,11 @@ export default async function handler(
   }
 
   try {
-    const { IpfsHash } = await pinata.pinJSONToIPFS(req.body);
+    const { IpfsHash } = await pinata.pinJSONToIPFS(req.body, {
+      pinataMetadata: {
+        name: `Noah-NFT-Metadata-${Date.now()}-${Math.random()}`,
+      },
+    });
     return res
       .status(200)
       .json({ uri: `https://gateway.pinata.cloud/ipfs/${IpfsHash}` });
