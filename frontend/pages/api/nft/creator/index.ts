@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { commonErrors } from "../../../errors";
-import { prisma } from "../../../prisma/db";
+import { commonErrors } from "../../../../errors";
+import { prisma } from "../../../../prisma/db";
 import { NoahNFT } from "@prisma/client";
 
 type Response<T> =
@@ -9,20 +9,14 @@ type Response<T> =
       message: string;
       data?: T;
     }
-  | NoahNFT
-  | NoahNFT[];
+  | NoahNFT;
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Response<null>>
 ) {
-  if (req.method !== "POST" && req.method !== "GET") {
+  if (req.method !== "POST") {
     return res.status(405).end();
-  }
-
-  if (req.method === "GET") {
-    const result = await prisma.noahNFT.findMany();
-    return res.status(200).json(result);
   }
 
   if (req.method === "POST") {

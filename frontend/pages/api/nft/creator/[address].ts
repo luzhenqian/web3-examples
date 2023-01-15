@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "../../../prisma/db";
-import { NoahNFT } from "@prisma/client";
+import { prisma } from "../../../../prisma/db";
+import { CreatorRequest } from "@prisma/client";
+import { creatorRequestErrors } from "../../../../errors/creator";
 
 type Response<T> =
   | {
@@ -8,7 +9,7 @@ type Response<T> =
       message: string;
       data?: T;
     }
-  | NoahNFT[];
+  | CreatorRequest;
 
 export default async function handler(
   req: NextApiRequest,
@@ -19,11 +20,14 @@ export default async function handler(
   }
 
   if (req.method === "GET") {
-    const result = await prisma.noahNFT.findMany({
+    const result = await prisma.creatorRequest.findFirst({
       where: {
-        owner: req.query.owner as string,
+        address: req.query.address as string,
       },
     });
+    if (!result) {
+      return res.status(404).json(creatorRequestErrors.isNotCreator);
+    }
     return res.status(200).json(result);
   }
 }

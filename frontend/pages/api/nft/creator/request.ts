@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { commonErrors } from "../../../errors";
-import { prisma } from "../../../prisma/db";
-import { MinterRequest } from "@prisma/client";
-import { minterRequestErrors } from "../../../errors/minter-request";
+import { commonErrors } from "../../../../errors";
+import { prisma } from "../../../../prisma/db";
+import { CreatorRequest } from "@prisma/client";
+import { creatorRequestErrors } from "../../../../errors/creator";
 
 type Response<T> =
   | {
@@ -10,8 +10,8 @@ type Response<T> =
       message: string;
       data?: T;
     }
-  | MinterRequest
-  | MinterRequest[];
+  | CreatorRequest
+  | CreatorRequest[];
 
 export default async function handler(
   req: NextApiRequest,
@@ -25,9 +25,10 @@ export default async function handler(
     const address = req.query.address;
     console.log("address", address);
     try {
-      const result = await prisma.minterRequest.findMany({
+      const result = await prisma.creatorRequest.findMany({
         where: {
           address: address as string,
+          status: 'passed'
         },
       });
       return res.status(200).json(result);
@@ -43,7 +44,7 @@ export default async function handler(
       return res.status(400).json(commonErrors.other);
     }
 
-    const record = await prisma.minterRequest.findFirst({
+    const record = await prisma.creatorRequest.findFirst({
       where: {
         address: request.address,
         status: "pending",
@@ -51,11 +52,11 @@ export default async function handler(
     });
 
     if (record) {
-      return res.status(400).json(minterRequestErrors.cannotReapply);
+      return res.status(400).json(creatorRequestErrors.cannotReapply);
     }
 
     try {
-      const result = await prisma.minterRequest.create({
+      const result = await prisma.creatorRequest.create({
         data: request,
       });
       return res.status(200).json(result);

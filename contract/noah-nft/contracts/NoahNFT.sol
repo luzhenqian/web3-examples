@@ -11,7 +11,6 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
     mapping(uint256 => address) public tokenApprovals; // 授权账本 NFT id =>  NFT 授权者
     mapping(address => mapping(address => bool)) public operatorApprovals; // 授权所有 NFT 的账本  NFT 持有者 => 被授权者 => 是否授权
     address public owner; // 合约所有者
-    mapping(address => bool) public minters; // NFT 发行者，具有铸币权的地址，可以发行 NFT
     string private _name; //  NFT 名称
     string private _symbol; //  NFT 符号
     mapping(uint256 => string) private _tokenURIs; //  NFT 元数据  NFT id => 元数据
@@ -22,19 +21,6 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
         owner = msg.sender;
         _name = initName;
         _symbol = initSymbol;
-        approveMinter(msg.sender, true); // 添加合约所有者为 NFT 发行者
-    }
-
-    // 授权或取消授权某个地址的铸币权
-    function approveMinter(address minter, bool approved) public {
-        require(msg.sender == owner, "NoahNFT: only owner can add minter");
-        minters[minter] = approved;
-    }
-
-    // 检查某个地址是否为 NFT 发行者
-    function isMinter(address minter) public view returns (bool) {
-        require(minter != address(0), "NoahNFT: minter is the zero address");
-        return minters[minter];
     }
 
     // 检查合约是否实现了某个接口
@@ -340,8 +326,8 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
         internal
         returns (uint256)
     {
-        // 合约调用者必须是铸造者
-        require(minters[msg.sender], "ERC721: caller is not the minter");
+        // 合约调用者必须是合约拥有者
+        require(msg.sender == owner, "ERC721: caller is not the minter");
         // 被授权者地址不能为0
         require(to != address(0), "ERC721: mint to the zero address");
 

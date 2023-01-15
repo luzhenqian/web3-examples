@@ -18,8 +18,14 @@ import {
   ModalHeader,
   ModalOverlay,
   Spinner,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Textarea,
   useDisclosure,
+  useModal,
   useToast,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
@@ -42,7 +48,7 @@ import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import Image from "next/image";
 import useSWR from "swr";
-import { MinterRequest, NFT } from "@prisma/client";
+import { CreatorRequest, NoahNFT as INoahNFT } from "@prisma/client";
 import dayjs from "dayjs";
 import dynamic from "next/dynamic";
 
@@ -61,45 +67,26 @@ export default function NoahNFT() {
 
   const [isMinter, setIsMinter] = useState(false);
   const { address } = useAccount();
-
-  // FIXME: useContractReads 的类型定义有问题
-  const { data, error, isError, isLoading } = useContractReads({
-    contracts: [
-      // @ts-ignore
-      {
-        ...noahNFTcontract,
-        functionName: "isMinter",
-        args: [address as `0x${string}`],
-      },
-    ],
-    enabled: !!address,
-  }) as any;
+  const { data, isLoading, error } = useSWR(`/api/nft/creator/${address}`);
 
   useEffect(() => {
-    if (data && !isError) {
-      setIsMinter(data[0]);
+    if (data && !error) {
+      setIsMinter(true);
     }
-  }, [data, error, isError]);
+  }, [data, error]);
 
   return (
     <div className="flex flex-col gap-2 p-4">
       <Profile></Profile>
       <Heading>Noah NFT</Heading>
+      {isMinter ? <Create /> : <CreatorRequest />}
       {address && <NFTList />}
-      {isMinter ? (
-        <Mint />
-      ) : (
-        <>
-          <MinterRequest />
-          <MinterRequestList />
-        </>
-      )}
     </div>
   );
 }
 
-// 请求成为铸造者
-function MinterRequest() {
+// 请求成为创作者
+function CreatorRequest() {
   const { address } = useAccount();
   const [isRequesting, setIsRequesting] = useState(false);
   const toast = useToast();
@@ -111,7 +98,7 @@ function MinterRequest() {
   }) => {
     setIsRequesting(true);
     try {
-      const res = await axios.post("/api/nft/minter-request", {
+      const res = await axios.post("/api/nft/creator/request", {
         ...values,
         address,
       });
@@ -145,7 +132,7 @@ function MinterRequest() {
         <ModalOverlay />
         <ModalContent>
           <Heading></Heading>
-          <ModalHeader>申请成为铸造者</ModalHeader>
+          <ModalHeader>申请成为创作者</ModalHeader>
           <ModalCloseButton />
 
           <Formik
@@ -188,7 +175,7 @@ function MinterRequest() {
                         name="reason"
                         id="reason"
                         type="text"
-                        placeholder="您为什么要申请成功铸造者？"
+                        placeholder="您为什么要申请成为创作者？"
                         as={Textarea}
                       ></Field>
                       <FormErrorMessage>{errors.reason}</FormErrorMessage>
@@ -213,231 +200,231 @@ function MinterRequest() {
         </ModalContent>
       </Modal>
 
-      <Heading>申请成为铸造者</Heading>
       <Alert>
-        <div>
-          <span>您还不是铸造者？</span>
-          <Button variant={"link"} title="申请成为铸造者" onClick={onOpen}>
-            申请成为铸造者
-          </Button>
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <span>您还不是创作者？</span>
+            <Button variant={"link"} title="申请成为创作者" onClick={onOpen}>
+              申请成为创作者
+            </Button>
+          </div>
+
+          <CreatorRequestList />
         </div>
       </Alert>
     </div>
   );
 }
 
-function MinterRequestList() {
+// 申请记录
+function CreatorRequestList() {
   const { address } = useAccount();
-  const { data, isLoading } = useSWR<MinterRequest[]>(
-    address ? `/api/nft/minter-request?address=${address}` : null
+  const { data, isLoading } = useSWR<CreatorRequest[]>(
+    address ? `/api/nft/creator/request/${address}` : null
   );
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <div>
-      <Heading>我的申请记录</Heading>
-      {isLoading && <Spinner />}
-      <List spacing={3} className="my-2">
-        {data?.map((item) => {
-          return (
-            <ListItem key={item.id}>
-              <div className="flex items-center gap-4">
-                <span>
-                  申请时间：{dayjs(item.createdAt).format("YYYY-MM-DD")}
-                </span>
-                <span>申请状态：{item.status}</span>
-              </div>
-            </ListItem>
-          );
-        })}
-      </List>
+      <Button bg={"pink.600"} color={"white"} onClick={onOpen} size="sm">
+        我的申请记录
+      </Button>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>申请记录</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {isLoading && <Spinner />}
+            {!isLoading && data?.length === 0 && (
+              <Alert status="info">暂无申请记录</Alert>
+            )}
+            <List spacing={3} className="my-2">
+              {data?.map((item) => {
+                return (
+                  <ListItem key={item.id}>
+                    <div className="flex items-center gap-4">
+                      <span>
+                        申请时间：{dayjs(item.createdAt).format("YYYY-MM-DD")}
+                      </span>
+                      <span>申请状态：{item.status}</span>
+                    </div>
+                  </ListItem>
+                );
+              })}
+            </List>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </div>
   );
 }
 
-// 铸造 NFT
+// Mint
 function Mint() {
-  const [tokenUri, setTokenUri] = useState<string | undefined>(undefined);
+  return (
+    <div>
+      <Button>Mint</Button>
+    </div>
+  );
+}
+
+// 制作 NFT
+function Create() {
   const { address } = useAccount();
   const toast = useToast();
-  const [tokenUriUploading, setTokenUriUploading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // FIXME: usePrepareContractWrite 的类型定义有问题
-  // @ts-ignore
-  const { config } = usePrepareContractWrite({
-    ...noahNFTcontract,
-    functionName: "mint",
-    args: [address, tokenUri],
-    enabled: !!tokenUri,
-  }) as any;
-
-  // FIXME:
-  // @ts-ignore
-  const { data: tokenId, refetch } = useContractRead({
-    ...noahNFTcontract,
-    functionName: "currentTokenId",
-  });
-
-  const { data, write, isLoading: isWriteLoading } = useContractWrite(config);
-
-  const { error, isError, isLoading } = useWaitForTransaction({
-    hash: data?.hash,
-  });
-
-  useEffect(() => {
-    if (data && !isError) {
-      setTokenUri(undefined);
-      setTokenUriUploading(false);
-    }
-  }, [data, error, isError]);
-
-  const saveNFTInfo = useCallback(
-    async (tokenId: number) => {
-      await axios.post("/api/nft", { owner: address, tokenId });
-    },
-    [address]
-  );
-
-  useEffect(() => {
-    (async () => {
-      if (data && !isError) {
-        const { data } = await refetch();
-        const tokenId = (data as any).toNumber();
-        saveNFTInfo(tokenId);
-        toast({
-          title: "NFT 铸造成功",
-          description: "您的 NFT 已经铸造成功",
-          status: "success",
-        });
-      }
-    })();
-  }, [data, error, isError, refetch, saveNFTInfo, toast]);
-
-  useEffect(() => {
-    if (isWriteLoading || isLoading) {
-      return;
-    }
-    if (tokenUri && write) {
-      write();
-    }
-  }, [isLoading, isWriteLoading, tokenUri, write]);
-
-  const mint = async (values: {
+  const createNFT = async (values: {
     name: string;
     description: string;
     image: string;
     attributes: { [key: string]: string | number | boolean }[];
     external_uri: string;
   }) => {
-    setTokenUriUploading(true);
-    const res = await axios.post("/api/upload/json", values);
-    setTokenUri(res.data.uri);
+    setIsLoading(true);
+    try {
+      const res = await axios.post("/api/upload/json", values);
+      await axios.post("/api/nft", {
+        creator: address,
+        metadataUri: res.data.uri,
+      });
+      toast({
+        title: "NFT 上传成功",
+        description: "您的 NFT 已经上传成功",
+        status: "success",
+      });
+      onClose();
+    } catch (e) {
+      toast({
+        title: "NFT 上传失败",
+        description: "您的 NFT 上传失败",
+        status: "error",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <div>
-      <Heading size={"lg"}>发布 NFT</Heading>
+      <Button onClick={onOpen} bg={"pink.600"} color={"white"}>
+        制作 NFT
+      </Button>
 
-      <Formik
-        initialValues={{
-          name: "",
-          description: "",
-          image: "",
-          attributes: [],
-          external_uri: "",
-        }}
-        onSubmit={(values) => {
-          mint(values);
-        }}
-      >
-        {({ handleSubmit, errors, touched, values }) => (
-          <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-            <FormControl isInvalid={!!errors.name && touched.name}>
-              <FormLabel htmlFor="name">名称</FormLabel>
-              <Field
-                as={Input}
-                id="name"
-                name="name"
-                type="text"
-                variant="filled"
-                validate={(value: string) => {
-                  let error;
-                  if (value.length === 0 || value.length > 128) {
-                    error = "名称长度必须大于 0 且小于 128";
-                  }
-                  return error;
-                }}
-              />
-              <FormErrorMessage>{errors.name}</FormErrorMessage>
-            </FormControl>
-
-            <FormControl
-              isInvalid={!!errors.description && touched.description}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalHeader>制作 NFT</ModalHeader>
+          <ModalBody>
+            <Formik
+              initialValues={{
+                name: "",
+                description: "",
+                image: "",
+                attributes: [],
+                external_uri: "",
+              }}
+              onSubmit={(values) => {
+                createNFT(values);
+              }}
             >
-              <FormLabel htmlFor="description">描述</FormLabel>
-              <Field
-                as={Textarea}
-                id="description"
-                name="description"
-                type="text"
-                variant="filled"
-                validate={(value: string) => {
-                  let error;
-                  if (value.length === 0 || value.length > 1024) {
-                    error = "描述长度必须大于 0 且小于 1024";
-                  }
-                  return error;
-                }}
-              />
-              <FormErrorMessage>{errors.description}</FormErrorMessage>
-            </FormControl>
+              {({ handleSubmit, errors, touched, values }) => (
+                <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+                  <FormControl isInvalid={!!errors.name && touched.name}>
+                    <FormLabel htmlFor="name">名称</FormLabel>
+                    <Field
+                      as={Input}
+                      id="name"
+                      name="name"
+                      type="text"
+                      variant="filled"
+                      validate={(value: string) => {
+                        let error;
+                        if (value.length === 0 || value.length > 128) {
+                          error = "名称长度必须大于 0 且小于 128";
+                        }
+                        return error;
+                      }}
+                    />
+                    <FormErrorMessage>{errors.name}</FormErrorMessage>
+                  </FormControl>
 
-            <FormControl isInvalid={!!errors.image && touched.image}>
-              <FormLabel htmlFor="image">图片</FormLabel>
-              <Field
-                as={UploadImage}
-                id="image"
-                name="image"
-                variant="filled"
-                onUpload={(data: any) => {
-                  values.image = data;
-                }}
-              />
-            </FormControl>
+                  <FormControl
+                    isInvalid={!!errors.description && touched.description}
+                  >
+                    <FormLabel htmlFor="description">描述</FormLabel>
+                    <Field
+                      as={Textarea}
+                      id="description"
+                      name="description"
+                      type="text"
+                      variant="filled"
+                      validate={(value: string) => {
+                        let error;
+                        if (value.length === 0 || value.length > 1024) {
+                          error = "描述长度必须大于 0 且小于 1024";
+                        }
+                        return error;
+                      }}
+                    />
+                    <FormErrorMessage>{errors.description}</FormErrorMessage>
+                  </FormControl>
 
-            <FormControl
-              isInvalid={!!errors.external_uri && touched.external_uri}
-            >
-              <FormLabel htmlFor="external_uri">外部链接</FormLabel>
-              <Field
-                as={Input}
-                id="external_uri"
-                name="external_uri"
-                type="text"
-                variant="filled"
-                validate={(value: string) => {
-                  let error;
-                  if (value === "") {
-                    return error;
-                  }
-                  if (value.length === 0 || value.length > 1024) {
-                    error = "外部长度必须大于 0 且小于 1024";
-                  }
-                  return error;
-                }}
-              />
-              <FormErrorMessage>{errors.external_uri}</FormErrorMessage>
-            </FormControl>
+                  <FormControl isInvalid={!!errors.image && touched.image}>
+                    <FormLabel htmlFor="image">图片</FormLabel>
+                    <Field
+                      as={UploadImage}
+                      id="image"
+                      name="image"
+                      variant="filled"
+                      onUpload={(data: any) => {
+                        values.image = data;
+                      }}
+                    />
+                  </FormControl>
 
-            <Button
-              type="submit"
-              colorScheme="purple"
-              width="full"
-              disabled={isWriteLoading || isLoading || tokenUriUploading}
-              isLoading={isWriteLoading || isLoading || tokenUriUploading}
-            >
-              铸造
-            </Button>
-          </form>
-        )}
-      </Formik>
+                  <FormControl
+                    isInvalid={!!errors.external_uri && touched.external_uri}
+                  >
+                    <FormLabel htmlFor="external_uri">外部链接</FormLabel>
+                    <Field
+                      as={Input}
+                      id="external_uri"
+                      name="external_uri"
+                      type="text"
+                      variant="filled"
+                      validate={(value: string) => {
+                        let error;
+                        if (value === "") {
+                          return error;
+                        }
+                        if (value.length === 0 || value.length > 1024) {
+                          error = "外部长度必须大于 0 且小于 1024";
+                        }
+                        return error;
+                      }}
+                    />
+                    <FormErrorMessage>{errors.external_uri}</FormErrorMessage>
+                  </FormControl>
+
+                  <Button
+                    type="submit"
+                    colorScheme="purple"
+                    width="full"
+                    disabled={isLoading}
+                    isLoading={isLoading}
+                  >
+                    制作 NFT
+                  </Button>
+                </form>
+              )}
+            </Formik>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </div>
   );
 }
@@ -446,12 +433,35 @@ const NFTList = dynamic(() => Promise.resolve(_NFTList), {
   ssr: false,
 });
 
-// 当前账户的 NFT 列表
+// NFT 列表
 function _NFTList() {
-  const { address } = useAccount();
-  const { data, error, isLoading } = useSWR<NFT[]>(`/api/nft/${address}`);
+  if (typeof window === "undefined") return null;
+  return (
+    <div className="flex flex-col gap-2">
+      <Tabs>
+        <TabList>
+          <Tab>我的 NFT</Tab>
+          <Tab>全部 NFT</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <MyNFTList />
+          </TabPanel>
+          <TabPanel>
+            <AllNFTList />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </div>
+  );
+}
 
-  const contracts = (data || []).map((nft: NFT) => {
+// 我的 NFT 列表
+function MyNFTList() {
+  const { address } = useAccount();
+  const { data, error, isLoading } = useSWR<INoahNFT[]>(`/api/nft/${address}`);
+
+  const contracts = (data || []).map((nft: INoahNFT) => {
     return {
       ...noahNFTcontract,
       functionName: "tokenURI",
@@ -487,13 +497,12 @@ function _NFTList() {
 
   return (
     <div className="flex flex-col gap-2">
-      <Heading size={"lg"}>我的 NFT</Heading>
       {isLoading && <Spinner />}
       {error && <div>加载失败</div>}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-4 gap-4 md:grid-cols-6">
         {data &&
           metadatas &&
-          data.map(({ id, tokenId, createdAt }: NFT, idx: number) => {
+          data.map(({ id, tokenId, createdAt }: INoahNFT, idx: number) => {
             const {
               name = "",
               description = "",
@@ -515,6 +524,63 @@ function _NFTList() {
                   </div>
                   {/* <div>属性：{JSON.stringify(item.attributes)}</div> */}
                   <div>Token ID：{tokenId}</div>
+                  <div>创建时间：{dayjs(createdAt).format("YYYY-MM-DD")}</div>
+                </div>
+              </Card>
+            );
+          })}
+      </div>
+    </div>
+  );
+}
+
+// 全部 NFT 列表
+function AllNFTList() {
+  const { data, isLoading, error } = useSWR("/api/nft");
+
+  const [metadatas, setMetadatas] = useState<any[]>([]);
+  useEffect(() => {
+    (async () => {
+      if (isLoading) {
+        return;
+      }
+      if (data) {
+        const metadataPromise = data.map(async ({ metadataUri }: INoahNFT) => {
+          return await (await fetch(metadataUri)).json();
+        });
+        const metadatas = await Promise.all(metadataPromise);
+        setMetadatas(metadatas);
+      }
+    })();
+  }, [data, isLoading]);
+  return (
+    <div className="flex flex-col gap-2">
+      {isLoading && <Spinner />}
+      {error && <div>加载失败</div>}
+      <div className="grid grid-cols-4 gap-4 md:grid-cols-6">
+        {data &&
+          metadatas &&
+          data.map(({ id, createdAt }: INoahNFT, idx: number) => {
+            const {
+              name = "",
+              description = "",
+              image = { uri: "" },
+              external_uri = "",
+            } = metadatas?.[idx] || {};
+
+            return (
+              <Card key={id} className="flex flex-col items-center p-4">
+                <Image src={image.uri} alt={name} width="200" height={"200"} />
+                <div>
+                  <div>名称：{name}</div>
+                  <div>描述：{description}</div>
+                  <div>
+                    外部链接：
+                    <a href={external_uri} target="_blank" rel="noreferrer">
+                      {external_uri}
+                    </a>
+                  </div>
+                  {/* <div>属性：{JSON.stringify(item.attributes)}</div> */}
                   <div>创建时间：{dayjs(createdAt).format("YYYY-MM-DD")}</div>
                 </div>
               </Card>

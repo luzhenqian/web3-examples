@@ -9,6 +9,10 @@ const commonErrors: Errors = {
     code: 200001,
     message: "未知错误",
   },
+  notFound: {
+    code: 200002,
+    message: "资源不存在",
+  },
 };
 
 export { commonErrors };
