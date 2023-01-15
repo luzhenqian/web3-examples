@@ -74,13 +74,18 @@ model VerificationToken {
 }
 
 model NoahNFT {
-  id          Int      @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   owner       String?
   tokenId     Int?
   metadataUri String
-  creator     String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  name        String
+  description String
+  image       String
+  externalUri String
+  attributes  Json
+  creator   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model CreatorRequest {
@@ -92,4 +97,13 @@ model CreatorRequest {
   status    String   @default("pending")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model NFTSync {
+  id              Int      @id @default(autoincrement())
+  fromBlockNumber Int
+  toBlockNumber   Int
+  timeConsumed    Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }

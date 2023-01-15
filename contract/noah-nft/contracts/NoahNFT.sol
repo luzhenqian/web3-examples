@@ -14,7 +14,7 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
     string private _name; //  NFT 名称
     string private _symbol; //  NFT 符号
     mapping(uint256 => string) private _tokenURIs; //  NFT 元数据  NFT id => 元数据
-    uint256 public currentTokenId = 0; // 当前 NFT id
+    uint256 public totalSupply = 0; // 当前 NFT id
 
     // 构造函数
     constructor(string memory initName, string memory initSymbol) {
@@ -241,7 +241,7 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
             IERC721Receiver(to).onERC721Received(
                 msg.sender,
                 from,
-                currentTokenId,
+                totalSupply,
                 _data
             )
         returns (bytes4 retval) {
@@ -330,18 +330,18 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
         require(to != address(0), "ERC721: mint to the zero address");
 
         // 更新当前 NFT ID
-        currentTokenId += 1;
+        totalSupply += 1;
 
         // 调用转移 NFT
-        _addTokenTo(to, currentTokenId);
+        _addTokenTo(to, totalSupply);
         // 触发 NFT 转移事件
-        emit Transfer(address(0), to, currentTokenId);
+        emit Transfer(address(0), to, totalSupply);
 
         // 设置 Token URI
-        _setTokenURI(currentTokenId, _tokenURI);
+        _setTokenURI(totalSupply, _tokenURI);
 
         // 返回当前 NFT ID
-        return currentTokenId;
+        return totalSupply;
     }
 
     // 设置 Token URI 内部函数

@@ -24,6 +24,7 @@ import {
   TabPanels,
   Tabs,
   Textarea,
+  useClipboard,
   useDisclosure,
   useModal,
   useToast,
@@ -43,7 +44,7 @@ import {
 } from "wagmi";
 import { abi } from "../abi/NoahNFT.json";
 import Profile from "../components/Profile";
-import { Formik, Field } from "formik";
+import { Formik, Field, FieldArray } from "formik";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import Image from "next/image";
@@ -52,6 +53,8 @@ import { CreatorRequest, NoahNFT as INoahNFT } from "@prisma/client";
 import dayjs from "dayjs";
 import dynamic from "next/dynamic";
 import { ethers } from "ethers";
+import { AddIcon, CopyIcon, DeleteIcon } from "@chakra-ui/icons";
+import { clone } from "radash";
 
 const noahNFTcontract = {
   address: process.env.NEXT_PUBLIC_NFT_CONTRACT_ADDRESS as string,
@@ -408,6 +411,11 @@ function Create() {
       await axios.post("/api/nft", {
         creator: address,
         metadataUri: res.data.uri,
+        name: values.name,
+        description: values.description,
+        image: values.image,
+        attributes: values.attributes,
+        external_uri: values.external_uri,
       });
       toast({
         title: "NFT 上传成功",
@@ -444,14 +452,17 @@ function Create() {
                 name: "",
                 description: "",
                 image: "",
-                attributes: [],
+                attributes: [
+                  {
+                    trait_type: "",
+                    value: "",
+                  },
+                ],
                 external_uri: "",
               }}
-              onSubmit={(values) => {
-                createNFT(values);
-              }}
+              onSubmit={createNFT}
             >
-              {({ handleSubmit, errors, touched, values }) => (
+              {({ handleSubmit, errors, touched, values, setValues }) => (
                 <form onSubmit={handleSubmit} className="flex flex-col gap-2">
                   <FormControl isInvalid={!!errors.name && touched.name}>
                     <FormLabel htmlFor="name">名称</FormLabel>
@@ -461,6 +472,7 @@ function Create() {
                       name="name"
                       type="text"
                       variant="filled"
+                      placeholder="NFT 的名称"
                       validate={(value: string) => {
                         let error;
                         if (value.length === 0 || value.length > 128) {
@@ -482,6 +494,7 @@ function Create() {
                       name="description"
                       type="text"
                       variant="filled"
+                      placeholder="对该 NFT 的描述"
                       validate={(value: string) => {
                         let error;
                         if (value.length === 0 || value.length > 1024) {
@@ -501,7 +514,11 @@ function Create() {
                       name="image"
                       variant="filled"
                       onUpload={(data: any) => {
-                        values.image = data;
+                        // values.image = data;
+                        setValues({
+                          ...values,
+                          image: data.uri,
+                        });
                       }}
                       validate={(value: string) => {
                         let error;
@@ -524,6 +541,7 @@ function Create() {
                       name="external_uri"
                       type="text"
                       variant="filled"
+                      placeholder="您在 Web2 中的网站链接"
                       validate={(value: string) => {
                         let error;
                         if (value.length === 0 || value.length > 1024) {
@@ -533,6 +551,104 @@ function Create() {
                       }}
                     />
                     <FormErrorMessage>{errors.external_uri}</FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl>
+                    <FieldArray name="attributes">
+                      {({ remove, push }) => (
+                        <div>
+                          <FormLabel
+                            htmlFor={`attributes`}
+                            className="!flex items-center justify-between w-full"
+                          >
+                            <span>属性</span>
+                            <AddIcon
+                              className="hover:text-purple-400"
+                              onClick={() => {
+                                push({
+                                  trait_type: "",
+                                  value: "",
+                                });
+                              }}
+                            />
+                          </FormLabel>
+                          <div className="flex flex-col gap-2">
+                            {values.attributes.map((attribute, index) => (
+                              <div key={index}>
+                                <div className="flex items-center justify-between gap-2">
+                                  <div>
+                                    <Field
+                                      as={Input}
+                                      id={`attributes.${index}.trait_type`}
+                                      name={`attributes.${index}.trait_type`}
+                                      type="text"
+                                      variant="filled"
+                                      placeholder="属性名"
+                                      validate={(value: string) => {
+                                        // TODO: error 无效
+                                        let error;
+                                        if (
+                                          value &&
+                                          (value.length === 0 ||
+                                            value.length > 1024)
+                                        ) {
+                                          error = "长度必须大于 0 且小于 1024";
+                                        }
+                                        return error;
+                                      }}
+                                    />
+
+                                    <FormErrorMessage>
+                                      {errors.attributes &&
+                                        /* @ts-ignore */
+                                        errors.attributes[index] &&
+                                        // @ts-ignore
+                                        errors.attributes[index].trait_type}
+                                    </FormErrorMessage>
+                                  </div>
+
+                                  <div>
+                                    <Field
+                                      as={Input}
+                                      id={`attributes.${index}.value`}
+                                      name={`attributes.${index}.value`}
+                                      type="text"
+                                      variant="filled"
+                                      placeholder="属性值"
+                                      validate={(value: string) => {
+                                        // TODO: error 无效
+                                        let error;
+                                        if (
+                                          value &&
+                                          (value.length === 0 ||
+                                            value.length > 1024)
+                                        ) {
+                                          error = "长度必须大于 0 且小于 1024";
+                                        }
+                                        return error;
+                                      }}
+                                    />
+                                    <FormErrorMessage>
+                                      {errors.attributes &&
+                                        // @ts-ignore
+                                        errors.attributes[index] &&
+                                        // @ts-ignore
+                                        errors.attributes[index].value}
+                                    </FormErrorMessage>
+                                  </div>
+
+                                  <DeleteIcon
+                                    color={"red.400"}
+                                    _hover={{ color: "red.600" }}
+                                    onClick={() => remove(index)}
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </FieldArray>
                   </FormControl>
 
                   <Button
@@ -554,12 +670,12 @@ function Create() {
   );
 }
 
-const NFTList = dynamic(() => Promise.resolve(_NFTList), {
+const NFTList = dynamic(() => Promise.resolve(NFTListTab), {
   ssr: false,
 });
 
 // NFT 列表
-function _NFTList() {
+function NFTListTab() {
   if (typeof window === "undefined") return null;
   return (
     <div className="flex flex-col gap-2">
@@ -570,10 +686,10 @@ function _NFTList() {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <MyNFTList />
+            <InternalNFTList type="owner" />
           </TabPanel>
           <TabPanel>
-            <AllNFTList />
+            <InternalNFTList type="all" />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -581,123 +697,47 @@ function _NFTList() {
   );
 }
 
-// 我的 NFT 列表
-function MyNFTList() {
+// NFT 列表
+function InternalNFTList({ type }: { type: "owner" | "all" }) {
   const { address } = useAccount();
   const { data, error, isLoading } = useSWR<INoahNFT[]>(
-    address ? `/api/nft/?owner=${address}` : null
+    type === "all" ? "/api/nft" : address ? `/api/nft/?owner=${address}` : null
   );
-
-  const contracts = (data || []).map((nft: INoahNFT) => {
-    return {
-      ...noahNFTcontract,
-      functionName: "tokenURI",
-      args: [nft.tokenId],
-    };
-  });
-
-  const [metadatas, setMetadatas] = useState<any[]>([]);
-
-  const { data: nftUris, isLoading: isReadsLoading } = useContractReads({
-    // FIXME:
-    // @ts-ignore
-    contracts,
-    enabled: data && data.length > 0 && !isLoading && !error,
-  }) as any;
-
-  useEffect(() => {
-    (async () => {
-      if (isReadsLoading) {
-        return;
-      }
-      if (nftUris && data) {
-        const metadataPromise = nftUris.map(async (uri: string) => {
-          return await (await fetch(uri)).json();
-        });
-        const metadatas = await Promise.all(metadataPromise);
-        setMetadatas(metadatas);
-      }
-    })();
-  }, [isReadsLoading, nftUris, data]);
-
-  if (typeof window === "undefined") return null;
 
   return (
     <div className="flex flex-col gap-2">
       {isLoading && <Spinner />}
       {error && <div>加载失败</div>}
-      <div className="grid grid-cols-4 gap-4 md:grid-cols-6">
+      <div className="grid grid-cols-1 gap-4 md:gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
         {data &&
-          metadatas &&
-          data.map(({ id, tokenId, createdAt }: INoahNFT, idx: number) => {
-            const {
-              name = "",
-              description = "",
-              image = { uri: "" },
-              external_uri = "",
-            } = metadatas?.[idx] || {};
-
-            return (
-              <NFT
-                key={id}
-                imageUri={image.uri}
-                name={name}
-                description={description}
-                external_uri={external_uri}
-                createdAt={createdAt}
-              />
-            );
-          })}
-      </div>
-    </div>
-  );
-}
-
-// 全部 NFT 列表
-function AllNFTList() {
-  const { data, isLoading, error } = useSWR("/api/nft");
-
-  const [metadatas, setMetadatas] = useState<any[]>([]);
-  useEffect(() => {
-    (async () => {
-      if (isLoading) {
-        return;
-      }
-      if (data) {
-        const metadataPromise = data.map(async ({ metadataUri }: INoahNFT) => {
-          return await (await fetch(metadataUri)).json();
-        });
-        const metadatas = await Promise.all(metadataPromise);
-        setMetadatas(metadatas);
-      }
-    })();
-  }, [data, isLoading]);
-  return (
-    <div className="flex flex-col gap-2">
-      {isLoading && <Spinner />}
-      {error && <div>加载失败</div>}
-      <div className="grid grid-cols-4 gap-4 md:grid-cols-6">
-        {data &&
-          metadatas &&
-          data.map(({ id, createdAt }: INoahNFT, idx: number) => {
-            const {
-              name = "",
-              description = "",
-              image = { uri: "" },
-              external_uri = "",
-            } = metadatas?.[idx] || {};
-
-            return (
-              <NFT
-                key={id}
-                imageUri={image.uri}
-                name={name}
-                description={description}
-                external_uri={external_uri}
-                createdAt={createdAt}
-              />
-            );
-          })}
+          data.map(
+            (
+              {
+                id,
+                name,
+                description,
+                image,
+                externalUri,
+                tokenId,
+                owner,
+                createdAt,
+              }: INoahNFT,
+              idx: number
+            ) => {
+              return (
+                <NFT
+                  key={id}
+                  imageUri={image}
+                  name={name}
+                  description={description}
+                  external_uri={externalUri}
+                  createdAt={createdAt}
+                  tokenId={tokenId}
+                  owner={owner}
+                />
+              );
+            }
+          )}
       </div>
     </div>
   );
@@ -710,6 +750,8 @@ function NFT({
   external_uri,
   createdAt,
   id,
+  tokenId,
+  owner,
 }: {
   imageUri: string;
   name: string;
@@ -717,7 +759,19 @@ function NFT({
   external_uri: string;
   createdAt: Date;
   id?: string;
+  tokenId?: number | null;
+  owner?: string | null;
 }) {
+  const { onCopy } = useClipboard(owner || "");
+  const toast = useToast();
+
+  if (!imageUri) {
+    return (
+      <Card>
+        <Spinner />
+      </Card>
+    );
+  }
   return (
     <Card className="flex flex-col items-center p-4">
       <Image src={imageUri} alt={name} width="200" height={"200"} />
@@ -737,6 +791,34 @@ function NFT({
         </div>
         {/* <div>属性：{JSON.stringify(item.attributes)}</div> */}
         <div>创建时间：{dayjs(createdAt).format("YYYY-MM-DD")}</div>
+        {tokenId && owner ? (
+          <>
+            <div>TokenId: {tokenId}</div>
+            <div className="flex items-center justify-between gap-2">
+              <div>
+                拥有者:
+                {`${owner.substring(0, 5)}...${owner.substring(
+                  owner.length - 4,
+                  owner.length
+                )}`}
+              </div>
+              <CopyIcon
+                className="cursor-pointer"
+                onClick={() => {
+                  onCopy();
+                  toast({
+                    title: "复制成功",
+                    status: "success",
+                    duration: 2000,
+                    isClosable: true,
+                  });
+                }}
+              />
+            </div>
+          </>
+        ) : (
+          <div>尚未铸造</div>
+        )}
       </div>
     </Card>
   );
@@ -744,7 +826,7 @@ function NFT({
 
 function UploadImage({ onUpload }: { onUpload: (data: any) => void }) {
   const [file, setFile] = useState<File | null>(null);
-  const [process, setProcess] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const check = async (file: File) => {
     return new Promise((resolve, reject) => {
@@ -765,6 +847,7 @@ function UploadImage({ onUpload }: { onUpload: (data: any) => void }) {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       (async () => {
+        setIsLoading(true);
         const file = acceptedFiles[0];
         try {
           await check(file);
@@ -773,6 +856,7 @@ function UploadImage({ onUpload }: { onUpload: (data: any) => void }) {
             title: "图片比例必须是 1:1",
             status: "error",
           });
+          setIsLoading(false);
           return;
         }
         setFile(file);
@@ -783,12 +867,12 @@ function UploadImage({ onUpload }: { onUpload: (data: any) => void }) {
             headers: {
               "Content-Type": "multipart/form-data",
             },
-            onUploadProgress: (progressEvent) => {
-              setProcess(progressEvent.loaded / progressEvent.total!);
-            },
           })
           .then((res) => {
             onUpload(res.data);
+          })
+          .finally(() => {
+            setIsLoading(false);
           });
       })();
     },
@@ -808,6 +892,9 @@ function UploadImage({ onUpload }: { onUpload: (data: any) => void }) {
       <div
         {...getRootProps()}
         className="flex justify-center p-4 border-2 border-gray-300 border-dashed rounded-sm cursor-pointer"
+        style={{
+          pointerEvents: isLoading ? "none" : "auto",
+        }}
       >
         <input {...getInputProps()} />
         {isDragActive ? (
@@ -825,7 +912,7 @@ function UploadImage({ onUpload }: { onUpload: (data: any) => void }) {
       {file && (
         <div
           className={`${
-            process === 1 ? "bg-gray-50" : "bg-gray-400"
+            !isLoading ? "bg-gray-50" : "bg-gray-400"
           } flex justify-between items-center py-2 px-4`}
         >
           <Image
@@ -834,11 +921,7 @@ function UploadImage({ onUpload }: { onUpload: (data: any) => void }) {
             width="100"
             height={"100"}
           />
-          {process === 1 ? (
-            <OkIcon className="fill-green-600" />
-          ) : (
-            <LoadingIcon />
-          )}
+          {!isLoading ? <OkIcon className="fill-green-600" /> : <LoadingIcon />}
         </div>
       )}
     </div>

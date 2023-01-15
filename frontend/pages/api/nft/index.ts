@@ -43,6 +43,11 @@ export default async function handler(
       const result = await prisma.noahNFT.create({
         data: {
           metadataUri: nft.metadataUri,
+          name: nft.name,
+          description: nft.description,
+          image: nft.image,
+          externalUri: nft.externalUri,
+          attributes: nft.attributes,
           creator: nft.creator,
         },
       });
