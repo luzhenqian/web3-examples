@@ -21,6 +21,15 @@ export default async function handler(
   }
 
   if (req.method === "GET") {
+    if (req.query.owner) {
+      const result = await prisma.noahNFT.findMany({
+        where: {
+          owner: req.query.owner as string,
+        },
+      });
+      return res.status(200).json(result);
+    }
+
     const result = await prisma.noahNFT.findMany();
     return res.status(200).json(result);
   }

@@ -51,13 +51,16 @@ import useSWR from "swr";
 import { CreatorRequest, NoahNFT as INoahNFT } from "@prisma/client";
 import dayjs from "dayjs";
 import dynamic from "next/dynamic";
+import { ethers } from "ethers";
 
 const noahNFTcontract = {
   address: process.env.NEXT_PUBLIC_NFT_CONTRACT_ADDRESS as string,
   abi,
 };
 
-export default function NoahNFT() {
+export default dynamic(() => Promise.resolve(NoahNFT), { ssr: false });
+
+function NoahNFT() {
   const { data: signer } = useSigner();
 
   const contractInstance = useContract({
@@ -67,11 +70,16 @@ export default function NoahNFT() {
 
   const [isMinter, setIsMinter] = useState(false);
   const { address } = useAccount();
-  const { data, isLoading, error } = useSWR(`/api/nft/creator/${address}`);
+  const { data, isLoading, error } = useSWR(
+    address ? `/api/nft/creator/${address}` : null
+  );
 
   useEffect(() => {
     if (data && !error) {
       setIsMinter(true);
+    }
+    if (error) {
+      console.log(error, "error");
     }
   }, [data, error]);
 
@@ -79,6 +87,7 @@ export default function NoahNFT() {
     <div className="flex flex-col gap-2 p-4">
       <Profile></Profile>
       <Heading>Noah NFT</Heading>
+      <Mint />
       {isMinter ? <Create /> : <CreatorRequest />}
       {address && <NFTList />}
     </div>
@@ -262,9 +271,120 @@ function CreatorRequestList() {
 
 // Mint
 function Mint() {
+  const toast = useToast();
+  const { address } = useAccount();
+  const [tokenId, setTokenId] = useState("");
+  const [metadataUri, setMetadataUri] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [isWriting, setIsWriting] = useState(false);
+
+  // @ts-ignore
+  const { config } = usePrepareContractWrite({
+    ...noahNFTcontract,
+    functionName: "mint",
+    args: [address, metadataUri],
+    enabled: !!metadataUri && !isWriting,
+  });
+  const {
+    data,
+    write,
+    isSuccess: isWriteSuccess,
+    isError: isWriteError,
+  } = useContractWrite(config);
+
+  const {
+    isLoading: isWaitLoading,
+    isSuccess,
+    isError,
+  } = useWaitForTransaction({
+    hash: data?.hash,
+  });
+
+  useEffect(() => {
+    if (isError || isSuccess || isWriteError) {
+      setMetadataUri("");
+      setIsWriting(false);
+      setIsLoading(false);
+    }
+  }, [isError, isSuccess, isWriteError]);
+
+  // @ts-ignore
+  useContractEvent({
+    ...noahNFTcontract,
+    eventName: "Transfer",
+    listener(from, to, contractTokenId: unknown) {
+      if (to === address && tokenId) {
+        axios.put(`/api/nft/${tokenId}`, {
+          tokenId: (contractTokenId as ethers.BigNumber).toNumber(),
+          owner: address,
+        });
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (!isWaitLoading) {
+      if (isSuccess) {
+        toast({
+          title: "Mint 成功",
+        });
+        setIsLoading(false);
+      }
+      if (isError) {
+        toast({
+          title: "Mint 失败",
+        });
+        setIsLoading(false);
+      }
+    }
+  }, [isError, isSuccess, isWaitLoading, toast]);
+
+  const mint = async () => {
+    try {
+      setIsLoading(true);
+      const token = (await axios.get("/api/nft/mint")).data;
+      if (!token) {
+        toast({
+          title: "Mint 失败",
+          status: "error",
+          description: "现在没有 NFT 可以 Mint",
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      setTokenId(token.id);
+      setMetadataUri(token.metadataUri);
+    } catch (e) {
+      toast({
+        title: "Mint 失败",
+      });
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isWriting) {
+      return;
+    }
+    if (metadataUri && write) {
+      setIsWriting(true);
+      write();
+    }
+  }, [isWriting, metadataUri]);
+
   return (
     <div>
-      <Button>Mint</Button>
+      <Button
+        onClick={mint}
+        color="white"
+        bg={"purple"}
+        isLoading={isLoading}
+        disabled={isLoading}
+      >
+        Mint
+      </Button>
     </div>
   );
 }
@@ -383,7 +503,15 @@ function Create() {
                       onUpload={(data: any) => {
                         values.image = data;
                       }}
+                      validate={(value: string) => {
+                        let error;
+                        if (value.length === 0) {
+                          error = "必须上传图片";
+                        }
+                        return error;
+                      }}
                     />
+                    <FormErrorMessage>{errors.image}</FormErrorMessage>
                   </FormControl>
 
                   <FormControl
@@ -398,9 +526,6 @@ function Create() {
                       variant="filled"
                       validate={(value: string) => {
                         let error;
-                        if (value === "") {
-                          return error;
-                        }
                         if (value.length === 0 || value.length > 1024) {
                           error = "外部长度必须大于 0 且小于 1024";
                         }
@@ -459,7 +584,9 @@ function _NFTList() {
 // 我的 NFT 列表
 function MyNFTList() {
   const { address } = useAccount();
-  const { data, error, isLoading } = useSWR<INoahNFT[]>(`/api/nft/${address}`);
+  const { data, error, isLoading } = useSWR<INoahNFT[]>(
+    address ? `/api/nft/?owner=${address}` : null
+  );
 
   const contracts = (data || []).map((nft: INoahNFT) => {
     return {
@@ -511,22 +638,14 @@ function MyNFTList() {
             } = metadatas?.[idx] || {};
 
             return (
-              <Card key={id} className="flex flex-col items-center p-4">
-                <Image src={image.uri} alt={name} width="200" height={"200"} />
-                <div>
-                  <div>名称：{name}</div>
-                  <div>描述：{description}</div>
-                  <div>
-                    外部链接：
-                    <a href={external_uri} target="_blank" rel="noreferrer">
-                      {external_uri}
-                    </a>
-                  </div>
-                  {/* <div>属性：{JSON.stringify(item.attributes)}</div> */}
-                  <div>Token ID：{tokenId}</div>
-                  <div>创建时间：{dayjs(createdAt).format("YYYY-MM-DD")}</div>
-                </div>
-              </Card>
+              <NFT
+                key={id}
+                imageUri={image.uri}
+                name={name}
+                description={description}
+                external_uri={external_uri}
+                createdAt={createdAt}
+              />
             );
           })}
       </div>
@@ -569,25 +688,57 @@ function AllNFTList() {
             } = metadatas?.[idx] || {};
 
             return (
-              <Card key={id} className="flex flex-col items-center p-4">
-                <Image src={image.uri} alt={name} width="200" height={"200"} />
-                <div>
-                  <div>名称：{name}</div>
-                  <div>描述：{description}</div>
-                  <div>
-                    外部链接：
-                    <a href={external_uri} target="_blank" rel="noreferrer">
-                      {external_uri}
-                    </a>
-                  </div>
-                  {/* <div>属性：{JSON.stringify(item.attributes)}</div> */}
-                  <div>创建时间：{dayjs(createdAt).format("YYYY-MM-DD")}</div>
-                </div>
-              </Card>
+              <NFT
+                key={id}
+                imageUri={image.uri}
+                name={name}
+                description={description}
+                external_uri={external_uri}
+                createdAt={createdAt}
+              />
             );
           })}
       </div>
     </div>
+  );
+}
+
+function NFT({
+  imageUri = "https://via.placeholder.com/150",
+  name,
+  description,
+  external_uri,
+  createdAt,
+  id,
+}: {
+  imageUri: string;
+  name: string;
+  description: string;
+  external_uri: string;
+  createdAt: Date;
+  id?: string;
+}) {
+  return (
+    <Card className="flex flex-col items-center p-4">
+      <Image src={imageUri} alt={name} width="200" height={"200"} />
+      <div>
+        <div>名称：{name}</div>
+        <div>描述：{description}</div>
+        <div>
+          外部链接：
+          <a
+            href={external_uri}
+            target="_blank"
+            rel="noreferrer"
+            className="text-blue-400"
+          >
+            {external_uri}
+          </a>
+        </div>
+        {/* <div>属性：{JSON.stringify(item.attributes)}</div> */}
+        <div>创建时间：{dayjs(createdAt).format("YYYY-MM-DD")}</div>
+      </div>
+    </Card>
   );
 }
 

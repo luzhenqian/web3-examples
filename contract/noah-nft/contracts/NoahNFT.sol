@@ -326,8 +326,6 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
         internal
         returns (uint256)
     {
-        // 合约调用者必须是合约拥有者
-        require(msg.sender == owner, "ERC721: caller is not the minter");
         // 被授权者地址不能为0
         require(to != address(0), "ERC721: mint to the zero address");
 

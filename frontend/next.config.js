@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    domains: ['gateway.pinata.cloud'],
+    domains: ['gateway.pinata.cloud', 'via.placeholder.com'],
   }
 }
 
