@@ -18,7 +18,12 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex justify-center items-center w-screen h-screen bg-[#f7f8fa] md:bg-[url(/bg.jpg)] p-2 md:p-20">
+      <main
+        className="flex justify-center items-center w-screen bg-[#f7f8fa] md:bg-[url(/bg.jpg)] p-2 md:p-20"
+        style={{
+          height: window.innerHeight,
+        }}
+      >
         <div className="hidden md:fixed top-8 right-8 md:block">
           <Link
             href={"https://github.com/luzhenqian/web3-examples"}
