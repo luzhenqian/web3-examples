@@ -10,7 +10,11 @@ import {
 import {
   Alert,
   Button,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
   Heading,
+  Icon,
   Input,
   Spinner,
   Table,
@@ -28,6 +32,8 @@ import Profile from "../components/Profile";
 import { ethers } from "ethers";
 import { useDropzone } from "react-dropzone";
 import { read, utils } from "xlsx";
+import { Field, Formik } from "formik";
+import { HiPaperAirplane } from "react-icons/hi";
 
 const contract = {
   address: process.env.NEXT_PUBLIC_AIRDROP_CONTRACT_ADDRESS as `0x${string}`,
@@ -75,75 +81,79 @@ function Airdrop() {
 }
 
 function OneToMany() {
-  const [addresses, setAddresses] = useState<string>("");
-  const [amount, setAmount] = useState<number>(0);
-
+  const [isLoading, setIsLoading] = useState(false);
   const onImported = (data: any) => {
     try {
       if (typeof data === "string") {
-        setAddresses(data);
+        return data;
       } else if (typeof data === "object") {
         const addresses = data
           .map(({ address }: any) => address)
           .filter((address: string) => ethers.utils.isAddress(address))
           .join("\n");
-        setAddresses(addresses);
+        return addresses;
       }
     } catch (err) {
       toast({
         title: "导入失败",
         status: "error",
       });
+      return "";
     }
   };
 
-  const addressesParam = addresses.trim().split("\n");
-  const isAddressValid = addressesParam.every((address) =>
-    ethers.utils.isAddress(address)
-  );
-
-  const { config } = usePrepareContractWrite({
+  const { data } = useSigner();
+  const nftContract = useContract({
     ...contract,
-    functionName: "oneToMany",
-    args: [addressesParam, amount],
-    enabled: isAddressValid && addressesParam.length > 0 && amount > 0,
+    signerOrProvider: data,
   });
 
-  const { write, data, isError } = useContractWrite(config);
-
-  const {
-    isSuccess,
-    isLoading,
-    isError: isWaitTransactionError,
-  } = useWaitForTransaction({
-    hash: data?.hash,
-  });
   const toast = useToast();
-  useEffect(() => {
-    if (isWaitTransactionError) {
+
+  const airdrop = async (values: { addresses: string; amount: number }) => {
+    setIsLoading(true);
+    const addressesParam = values.addresses.trim().split("\n");
+    const isAddressValid = addressesParam.every((address) =>
+      ethers.utils.isAddress(address)
+    );
+    if (!isAddressValid) {
       toast({
-        title: "空投失败",
+        title: "地址不合法",
         status: "error",
-        isClosable: true,
       });
+      return;
     }
-    if (isSuccess) {
+    try {
+      const { wait } = await nftContract?.oneToMany(
+        addressesParam,
+        values.amount
+      );
+      const receipt = await wait();
+      console.log(receipt, "receipt");
       toast({
         title: "空投成功",
         status: "success",
         isClosable: true,
       });
+    } catch (err) {
+      console.log(err, "err");
+      toast({
+        title: "空投失败",
+        status: "error",
+        isClosable: true,
+      });
+    } finally {
+      setIsLoading(false);
     }
-  }, [isSuccess, isWaitTransactionError, toast]);
+  };
 
   return (
     <div className="flex flex-col gap-2">
       <Heading>多个地址使用相同的数量进行空投</Heading>
 
-      <Alert status={isAddressValid ? "info" : "error"}>
+      <Alert>
         <ul>
           <li>每行代表一个地址</li>
-          {!isAddressValid && <li>地址格式不正确</li>}
         </ul>
       </Alert>
 
@@ -160,25 +170,75 @@ function OneToMany() {
           </ul>
         </div>
       </Alert>
-      <ImportExcel onImported={onImported} />
 
-      <Textarea
-        value={addresses}
-        onChange={(e) => setAddresses(e.target.value)}
-        placeholder="请输入要转账的地址"
-      ></Textarea>
-      <Input
-        value={amount}
-        onChange={(e) => setAmount(Number(e.target.value))}
-        placeholder="请输入要转账的代币数量"
-      ></Input>
-      <Button
-        isLoading={isLoading}
-        isDisabled={isLoading}
-        onClick={() => write?.()}
+      <Formik
+        initialValues={{
+          addresses: "",
+          amount: 0,
+        }}
+        onSubmit={airdrop}
       >
-        发送
-      </Button>
+        {({ errors, touched, handleSubmit, values, setValues }) => (
+          <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+            <Field
+              as={ImportExcel}
+              onImported={(value: string) => {
+                console.log(values, "valuse");
+
+                setValues({
+                  ...values,
+                  addresses: onImported(value),
+                });
+              }}
+            />
+
+            <FormControl isInvalid={!!errors.addresses && touched.addresses}>
+              <FormLabel htmlFor="addresses">地址</FormLabel>
+              <Field
+                as={Textarea}
+                id={"addresses"}
+                name="addresses"
+                placeholder="请输入要转账的地址"
+                validate={(value: string) => {
+                  let error;
+                  if (!value) {
+                    error = "地址不能为空";
+                  }
+                  const addressesParam = value.trim().split("\n");
+                  const isAddressValid = addressesParam.every((address) =>
+                    ethers.utils.isAddress(address)
+                  );
+                  if (!isAddressValid) {
+                    error = "地址格式不正确";
+                  }
+                  return error;
+                }}
+              ></Field>
+              <FormErrorMessage>{errors.addresses}</FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={!!errors.amount && touched.amount}>
+              <FormLabel htmlFor="amount">数量</FormLabel>
+              <Field
+                as={Input}
+                id={"amount"}
+                name="amount"
+                type="number"
+                min={0}
+                placeholder="请输入要转账的代币数量"
+                validate={(value: number) => {
+                  let error;
+                  if (value <= 0) {
+                    error = "数量必须大于 0";
+                  }
+                  return error;
+                }}
+              ></Field>
+              <FormErrorMessage>{errors.amount}</FormErrorMessage>
+            </FormControl>
+            <AirDropButton isLoading={isLoading} isDisabled={!!!errors} />
+          </form>
+        )}
+      </Formik>
     </div>
   );
 }
@@ -345,6 +405,10 @@ function OneToOne() {
           添加一列
         </Button>
         <Button
+          type="submit"
+          color={"white"}
+          bg={"pink.400"}
+          leftIcon={<Icon as={HiPaperAirplane} className="rotate-90" />}
           isLoading={isLoading}
           isDisabled={isLoading || !isValid}
           onClick={() => write?.()}
@@ -412,5 +476,26 @@ function ImportExcel({ onImported }: { onImported: (data: any) => void }) {
         </div>
       )}
     </div>
+  );
+}
+
+function AirDropButton({
+  isLoading,
+  isDisabled,
+}: {
+  isLoading: boolean;
+  isDisabled: boolean;
+}) {
+  return (
+    <Button
+      isLoading={isLoading}
+      isDisabled={isLoading || isDisabled}
+      type="submit"
+      color={"white"}
+      bg={"pink.400"}
+      leftIcon={<Icon as={HiPaperAirplane} className="rotate-90" />}
+    >
+      发送
+    </Button>
   );
 }
