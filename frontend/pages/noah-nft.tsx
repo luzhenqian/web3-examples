@@ -55,6 +55,12 @@ import dynamic from "next/dynamic";
 import { ethers } from "ethers";
 import { AddIcon, CopyIcon, DeleteIcon } from "@chakra-ui/icons";
 import { clone } from "radash";
+import { EventEmitter } from "events";
+
+const eventBus = new EventEmitter();
+const events = {
+  NFT_CREATED: "NFT_CREATED",
+};
 
 const noahNFTcontract = {
   address: process.env.NEXT_PUBLIC_NFT_CONTRACT_ADDRESS as string,
@@ -92,7 +98,7 @@ function NoahNFT() {
       <Heading>Noah NFT</Heading>
       <Mint />
       {isMinter ? <Create /> : <CreatorRequest />}
-      {address && <NFTList />}
+      <NFTList />
     </div>
   );
 }
@@ -137,6 +143,10 @@ function CreatorRequest() {
       onClose();
     }
   };
+
+  if (!address) {
+    return <Alert status="info">需要先连接钱包才可以制作 NFT</Alert>;
+  }
 
   return (
     <div className="flex flex-col gap-2">
@@ -276,89 +286,58 @@ function CreatorRequestList() {
 function Mint() {
   const toast = useToast();
   const { address } = useAccount();
-  const [tokenId, setTokenId] = useState("");
-  const [metadataUri, setMetadataUri] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const [isWriting, setIsWriting] = useState(false);
-
-  // @ts-ignore
-  const { config } = usePrepareContractWrite({
+  const { data: signer } = useSigner();
+  const noahNFTcontractInstance = useContract({
     ...noahNFTcontract,
-    functionName: "mint",
-    args: [address, metadataUri],
-    enabled: !!metadataUri && !isWriting,
-  });
-  const {
-    data,
-    write,
-    isSuccess: isWriteSuccess,
-    isError: isWriteError,
-  } = useContractWrite(config);
-
-  const {
-    isLoading: isWaitLoading,
-    isSuccess,
-    isError,
-  } = useWaitForTransaction({
-    hash: data?.hash,
+    signerOrProvider: signer,
   });
 
-  useEffect(() => {
-    if (isError || isSuccess || isWriteError) {
-      setMetadataUri("");
-      setIsWriting(false);
-      setIsLoading(false);
-    }
-  }, [isError, isSuccess, isWriteError]);
-
-  // @ts-ignore
-  useContractEvent({
-    ...noahNFTcontract,
-    eventName: "Transfer",
-    listener(from, to, contractTokenId: unknown) {
-      if (to === address && tokenId) {
-        axios.put(`/api/nft/${tokenId}`, {
-          tokenId: (contractTokenId as ethers.BigNumber).toNumber(),
-          owner: address,
-        });
-      }
-    },
-  });
-
-  useEffect(() => {
-    if (!isWaitLoading) {
-      if (isSuccess) {
-        toast({
-          title: "Mint 成功",
-        });
-        setIsLoading(false);
-      }
-      if (isError) {
-        toast({
-          title: "Mint 失败",
-        });
-        setIsLoading(false);
-      }
-    }
-  }, [isError, isSuccess, isWaitLoading, toast]);
+  // useEffect(() => {
+  //   if (!isWaitLoading) {
+  //     if (isSuccess) {
+  //     }
+  //     if (isError) {
+  //       toast({
+  //         title: "Mint 失败",
+  //       });
+  //       setIsLoading(false);
+  //     }
+  //   }
+  // }, [isError, isSuccess, isWaitLoading, toast]);
 
   const mint = async () => {
     try {
       setIsLoading(true);
-      const token = (await axios.get("/api/nft/mint")).data;
-      if (!token) {
+      try {
+        const token = (await axios.get("/api/nft/mint")).data;
+        try {
+          const { wait } = await noahNFTcontractInstance?.mint(
+            address,
+            token.metadataUri
+          );
+          const receipt = await wait();
+          console.log(receipt);
+          toast({
+            title: "Mint 成功",
+          });
+        } catch (e) {
+          console.log(e, "eee");
+          toast({
+            title: "您已取消 Mint",
+            status: "error",
+          });
+        }
+      } catch (e) {
         toast({
           title: "Mint 失败",
           status: "error",
           description: "现在没有 NFT 可以 Mint",
         });
+      } finally {
         setIsLoading(false);
-        return;
       }
-
-      setTokenId(token.id);
-      setMetadataUri(token.metadataUri);
     } catch (e) {
       toast({
         title: "Mint 失败",
@@ -366,16 +345,6 @@ function Mint() {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (isWriting) {
-      return;
-    }
-    if (metadataUri && write) {
-      setIsWriting(true);
-      write();
-    }
-  }, [isWriting, metadataUri]);
 
   return (
     <div>
@@ -423,6 +392,7 @@ function Create() {
         status: "success",
       });
       onClose();
+      eventBus.emit(events.NFT_CREATED);
     } catch (e) {
       toast({
         title: "NFT 上传失败",
@@ -437,9 +407,13 @@ function Create() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <div>
-      <Button onClick={onOpen} bg={"pink.600"} color={"white"}>
-        制作 NFT
-      </Button>
+      {address ? (
+        <Button onClick={onOpen} bg={"pink.600"} color={"white"}>
+          制作 NFT
+        </Button>
+      ) : (
+        <Alert status="info">需要先连接钱包才可以制作 NFT</Alert>
+      )}
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -700,9 +674,16 @@ function NFTListTab() {
 // NFT 列表
 function InternalNFTList({ type }: { type: "owner" | "all" }) {
   const { address } = useAccount();
-  const { data, error, isLoading } = useSWR<INoahNFT[]>(
+  const { data, error, isLoading, mutate } = useSWR<INoahNFT[]>(
     type === "all" ? "/api/nft" : address ? `/api/nft/?owner=${address}` : null
   );
+
+  useEffect(() => {
+    eventBus.on(events.NFT_CREATED, mutate);
+    return () => {
+      eventBus.off(events.NFT_CREATED, mutate);
+    };
+  }, [mutate]);
 
   return (
     <div className="flex flex-col gap-2">

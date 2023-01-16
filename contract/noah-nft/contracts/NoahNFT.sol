@@ -13,14 +13,20 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
     address public owner; // 合约所有者
     string private _name; //  NFT 名称
     string private _symbol; //  NFT 符号
+    string private _baseURI; //  NFT 的基础 MetadataURI
     mapping(uint256 => string) private _tokenURIs; //  NFT 元数据  NFT id => 元数据
-    uint256 public totalSupply = 0; // 当前 NFT id
+    uint256 public totalSupply = 0; // 当前 NFT id，同时也是 NFT 总数
 
     // 构造函数
-    constructor(string memory initName, string memory initSymbol) {
+    constructor(
+        string memory initName,
+        string memory initSymbol,
+        string memory baseURI
+    ) {
         owner = msg.sender;
         _name = initName;
         _symbol = initSymbol;
+        _baseURI = baseURI;
     }
 
     // 检查合约是否实现了某个接口
@@ -46,14 +52,34 @@ contract NoahNFT is IERC721, IERC721Metadata, IERC165 {
         return _symbol;
     }
 
+    // 设置 NFT 的基础 MetadataURI
+    function setBaseURI(string memory baseURI) public {
+        require(msg.sender == owner, "only owner can set baseURI");
+        _baseURI = baseURI;
+    }
+
     // 查询 NFT 的 MetadataURI
     function tokenURI(uint256 tokenId)
         public
         view
+        virtual
         override
         returns (string memory)
     {
-        return _tokenURIs[tokenId];
+        require(
+            _exists(tokenId),
+            "ERC721Metadata: URI query for nonexistent token"
+        );
+
+        return
+            bytes(_baseURI).length > 0
+                ? string(abi.encodePacked(_baseURI, _tokenURIs[tokenId]))
+                : "";
+    }
+
+    // 检查某个 NFT 是否存在
+    function _exists(uint256 tokenId) internal view virtual returns (bool) {
+        return owners[tokenId] != address(0);
     }
 
     // 查询某个地址的 NFT 数量

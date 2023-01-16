@@ -31,9 +31,7 @@ export default async function handler(
         name: `Noah-NFT-Metadata-${Date.now()}-${Math.random()}`,
       },
     });
-    return res
-      .status(200)
-      .json({ uri: `https://gateway.pinata.cloud/ipfs/${IpfsHash}` });
+    return res.status(200).json({ uri: IpfsHash });
   } catch (err) {
     console.error("Error", err);
     return res.status(500).json(commonErrors.other);

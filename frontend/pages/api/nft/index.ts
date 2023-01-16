@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { commonErrors } from "../../../errors";
 import { prisma } from "../../../prisma/db";
 import { NoahNFT } from "@prisma/client";
+import { addImageBaseUrl } from "../../../libs/image-url";
 
 type Response<T> =
   | {
@@ -27,11 +28,13 @@ export default async function handler(
           owner: req.query.owner as string,
         },
       });
-      return res.status(200).json(result);
+      const resData: NoahNFT[] = mapping(result);
+      return res.status(200).json(resData);
     }
 
     const result = await prisma.noahNFT.findMany();
-    return res.status(200).json(result);
+    const resData: NoahNFT[] = mapping(result);
+    return res.status(200).json(resData);
   }
 
   if (req.method === "POST") {
@@ -46,7 +49,7 @@ export default async function handler(
           name: nft.name,
           description: nft.description,
           image: nft.image,
-          externalUri: nft.externalUri,
+          externalUri: nft.external_uri,
           attributes: nft.attributes,
           creator: nft.creator,
         },
@@ -57,4 +60,11 @@ export default async function handler(
       return res.status(500).json(commonErrors.other);
     }
   }
+}
+
+function mapping(NFTs: NoahNFT[]) {
+  return NFTs.map((NFT) => {
+    NFT.image = addImageBaseUrl(NFT.image);
+    return NFT;
+  });
 }

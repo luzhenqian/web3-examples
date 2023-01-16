@@ -50,7 +50,7 @@ export default async function handler(
       });
 
       res.json({
-        uri: `https://gateway.pinata.cloud/ipfs/${IpfsHash}`,
+        uri: IpfsHash,
       });
     } catch (e) {
       console.error(e, "e");
