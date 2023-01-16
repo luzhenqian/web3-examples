@@ -57,7 +57,7 @@ function Profile() {
                   isLoading={
                     isSwitchNetworkLoading && chain.id === pendingChainId
                   }
-                  onClick={() => switchNetwork?.(supportedChainIds[0])}
+                  onClick={() => switchNetwork?.(chain.id)}
                   size="sm"
                 >
                   {chain.name}
