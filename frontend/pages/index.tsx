@@ -10,6 +10,7 @@ const SimpleBar = dynamic(() => import("simplebar-react"), {
 });
 
 export default function Home() {
+  if (typeof window === "undefined") return null;
   return (
     <>
       <Head>
