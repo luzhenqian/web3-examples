@@ -7,6 +7,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import dynamic from "next/dynamic";
 
 type IWalletCtx = {
   walletProvider: any;
@@ -28,7 +29,9 @@ type IWalletCtx = {
 
 const WalletCtx = createContext<IWalletCtx>({} as IWalletCtx);
 
-export default function Wallet() {
+export default dynamic(() => Promise.resolve(Wallet), { ssr: false });
+
+function Wallet() {
   const [walletProvider, setWalletProvider] = useState<any>(null);
   const [msgIsOpen, setMsgIsOpen] = useState(false);
   const [msg, setMsg] = useState("");
@@ -38,6 +41,9 @@ export default function Wallet() {
   const [refresh, setRefresh] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!window.ethereum) {
+      return;
+    }
     setWalletProvider(
       new ethers.providers.Web3Provider(window.ethereum as any)
     );
@@ -51,6 +57,19 @@ export default function Wallet() {
       setMsgIsOpen(false);
     }, 2000);
   };
+
+  if (!window.ethereum) {
+    return (
+      <div className="flex flex-col gap-4 p-4">
+        <h1 className="text-2xl font-thin">
+          Please install{" "}
+          <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn">
+            MetaMask
+          </a>
+        </h1>
+      </div>
+    );
+  }
 
   return (
     <WalletCtx.Provider
