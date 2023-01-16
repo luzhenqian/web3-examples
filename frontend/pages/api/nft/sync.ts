@@ -91,6 +91,7 @@ export default async function handler(
         const nft = await prisma.noahNFT.findFirst({
           where: {
             metadataUri: trimImageBaseUrl(tokenURI),
+            owner: null,
           },
         });
         if (nft) {
