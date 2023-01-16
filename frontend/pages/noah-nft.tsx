@@ -8,7 +8,6 @@ import {
   Heading,
   Input,
   List,
-  ListIcon,
   ListItem,
   Modal,
   ModalBody,
@@ -26,22 +25,10 @@ import {
   Textarea,
   useClipboard,
   useDisclosure,
-  useModal,
   useToast,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
-import {
-  useAccount,
-  useContract,
-  useContractEvent,
-  useContractInfiniteReads,
-  useContractRead,
-  useContractReads,
-  useContractWrite,
-  usePrepareContractWrite,
-  useSigner,
-  useWaitForTransaction,
-} from "wagmi";
+import { useAccount, useContract, useSigner } from "wagmi";
 import { abi } from "../abi/NoahNFT.json";
 import Profile from "../components/Profile";
 import { Formik, Field, FieldArray } from "formik";
@@ -52,9 +39,7 @@ import useSWR from "swr";
 import { CreatorRequest, NoahNFT as INoahNFT } from "@prisma/client";
 import dayjs from "dayjs";
 import dynamic from "next/dynamic";
-import { ethers } from "ethers";
 import { AddIcon, CopyIcon, DeleteIcon } from "@chakra-ui/icons";
-import { clone } from "radash";
 import { EventEmitter } from "events";
 
 const eventBus = new EventEmitter();
@@ -88,7 +73,7 @@ function NoahNFT() {
       setIsMinter(true);
     }
     if (error) {
-      console.log(error, "error");
+      console.log(error);
     }
   }, [data, error]);
 
@@ -128,7 +113,7 @@ function CreatorRequest() {
         });
       }
     } catch (e: any) {
-      console.log(e, "e");
+      console.log(e);
       let description = "请稍后再试";
       if (e.response.status === 400) {
         description = e.response.data.message;
@@ -177,6 +162,14 @@ function CreatorRequest() {
                         type="text"
                         placeholder="怎么称呼您？"
                         as={Input}
+                        validate={(value: string) => {
+                          if (!value) {
+                            return "名称不能为空";
+                          }
+                          if (value.length > 20 || value.length <= 0) {
+                            return "名称长度必须在 1-20 之间";
+                          }
+                        }}
                       ></Field>
                       <FormErrorMessage>{errors.name}</FormErrorMessage>
                     </FormControl>
@@ -188,6 +181,14 @@ function CreatorRequest() {
                         type="email"
                         placeholder="怎么联系您？"
                         as={Input}
+                        validate={(value: string) => {
+                          if (!value) {
+                            return "邮箱不能为空";
+                          }
+                          if (value.length > 1024 || value.length <= 0) {
+                            return "邮箱长度必须在 1-1024 之间";
+                          }
+                        }}
                       ></Field>
                       <FormErrorMessage>{errors.name}</FormErrorMessage>
                     </FormControl>
@@ -199,6 +200,14 @@ function CreatorRequest() {
                         type="text"
                         placeholder="您为什么要申请成为创作者？"
                         as={Textarea}
+                        validate={(value: string) => {
+                          if (!value) {
+                            return "申请原因不能为空";
+                          }
+                          if (value.length > 1024 || value.length <= 0) {
+                            return "申请原因长度必须在 1-1024 之间";
+                          }
+                        }}
                       ></Field>
                       <FormErrorMessage>{errors.reason}</FormErrorMessage>
                     </FormControl>
@@ -321,7 +330,7 @@ function Mint() {
             owner: address,
           });
         } catch (e) {
-          console.log(e, "eee");
+          console.log(e);
           toast({
             title: "您已取消 Mint",
             status: "error",
