@@ -80,7 +80,7 @@ const fetcher = async (url: string) => {
 };
 
 const options: SWRConfiguration = {
-  refreshInterval: 30000,
+  refreshInterval: 3000,
   fetcher,
 };
 

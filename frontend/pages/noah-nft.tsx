@@ -294,19 +294,6 @@ function Mint() {
     signerOrProvider: signer,
   });
 
-  // useEffect(() => {
-  //   if (!isWaitLoading) {
-  //     if (isSuccess) {
-  //     }
-  //     if (isError) {
-  //       toast({
-  //         title: "Mint 失败",
-  //       });
-  //       setIsLoading(false);
-  //     }
-  //   }
-  // }, [isError, isSuccess, isWaitLoading, toast]);
-
   const mint = async () => {
     try {
       setIsLoading(true);
@@ -321,6 +308,17 @@ function Mint() {
           console.log(receipt);
           toast({
             title: "Mint 成功",
+          });
+          // 获取 tokenId
+          const tokenId = receipt.events
+            .find((event: any) => {
+              return event.event === "Transfer";
+            })
+            .args.tokenId.toNumber();
+          // 更新数据
+          axios.put(`/api/nft/${token.id}`, {
+            tokenId,
+            owner: address,
           });
         } catch (e) {
           console.log(e, "eee");
