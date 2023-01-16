@@ -17,6 +17,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { SessionProvider } from "next-auth/react";
 import { SWRConfig, SWRConfiguration } from "swr";
 import axios from "axios";
+import "simplebar-react/dist/simplebar.min.css";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [

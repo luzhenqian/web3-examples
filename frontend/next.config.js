@@ -3,7 +3,10 @@ const nextConfig = {
   reactStrictMode: false,
   images: {
     domains: ['gateway.pinata.cloud', 'via.placeholder.com'],
-  }
+  },
+  experimental: {
+    appDir: true
+  },
 }
 
 module.exports = nextConfig

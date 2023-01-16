@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import Link from "next/link";
-import "simplebar-react/dist/simplebar.min.css";
 import examples from "../examples.json";
 
 // FIXME:
