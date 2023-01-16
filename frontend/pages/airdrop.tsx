@@ -182,9 +182,9 @@ function OneToMany() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-2">
             <Field
               as={ImportExcel}
+              id="excel"
+              name="excel"
               onImported={(value: string) => {
-                console.log(values, "valuse");
-
                 setValues({
                   ...values,
                   addresses: onImported(value),
