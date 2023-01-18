@@ -4,6 +4,7 @@
     "Formik",
     "metadatas",
     "nextauth",
+    "QSTASH",
     "simplebar",
     "supabase",
     "wagmi"

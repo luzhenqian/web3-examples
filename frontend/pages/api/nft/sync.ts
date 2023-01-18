@@ -19,6 +19,11 @@ export default async function handler(
   if (req.method !== "GET") {
     return res.status(405).end();
   }
+
+  if (req.query.pk !== process.env.QSTASH_PK) {
+    return res.status(401).end();
+  }
+
   // 记录同步时间
   const now = performance.now();
   // 获取上一次同步信息
