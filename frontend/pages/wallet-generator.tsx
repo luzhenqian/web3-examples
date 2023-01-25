@@ -65,9 +65,7 @@ export default function WalletGenerator() {
     <div className="flex flex-col gap-2 p-4 ">
       <Heading>钱包地址生成器</Heading>
       <Heading size={"sm"}>生成数量</Heading>
-      <Alert>
-        一次最多生成 100 个钱包地址，如果生成过多会导致浏览器卡死。
-      </Alert>
+      <Alert>一次最多生成 100 个钱包地址，如果生成过多会导致浏览器卡死。</Alert>
       <Input
         type="number"
         value={generateNum}
@@ -101,7 +99,7 @@ export default function WalletGenerator() {
                 <AccordionPanel className="flex flex-col gap-2">
                   <div className="flex items-center gap-2">
                     <p className="w-12">地址</p>
-                    <Input className="flex-1" value={wallet.address} />
+                    <Input className="flex-1" value={wallet.address} readOnly />
                     <Button
                       onClick={() => {
                         setValue(wallet.address);
@@ -116,7 +114,11 @@ export default function WalletGenerator() {
 
                   <div className="flex items-center gap-2">
                     <p className="w-12">私钥</p>
-                    <Input className="flex-1" value={wallet.privateKey} />
+                    <Input
+                      className="flex-1"
+                      value={wallet.privateKey}
+                      readOnly
+                    />
                     <Button
                       onClick={() => {
                         setValue(wallet.privateKey);
@@ -131,7 +133,11 @@ export default function WalletGenerator() {
 
                   <div className="flex items-center gap-2">
                     <p className="w-12">助记词</p>
-                    <Input className="flex-1" value={wallet.mnemonic.phrase} />
+                    <Input
+                      className="flex-1"
+                      value={wallet.mnemonic.phrase}
+                      readOnly
+                    />
                     <Button
                       onClick={() => {
                         setValue(wallet.mnemonic.phrase);
