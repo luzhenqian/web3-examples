@@ -74,7 +74,7 @@ model VerificationToken {
 }
 
 model NoahNFT {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   owner       String?
   tokenId     Int?
   metadataUri String
@@ -83,9 +83,9 @@ model NoahNFT {
   image       String
   externalUri String
   attributes  Json
-  creator   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  creator     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model CreatorRequest {

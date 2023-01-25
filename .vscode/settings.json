@@ -5,6 +5,8 @@
     "metadatas",
     "nextauth",
     "QSTASH",
+    "radash",
+    "rainbowkit",
     "simplebar",
     "supabase",
     "wagmi"

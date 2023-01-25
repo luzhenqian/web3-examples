@@ -150,13 +150,6 @@ function OneToMany() {
   return (
     <div className="flex flex-col gap-2">
       <Heading>多个地址使用相同的数量进行空投</Heading>
-
-      <Alert>
-        <ul>
-          <li>每行代表一个地址</li>
-        </ul>
-      </Alert>
-
       <Alert>
         <div>
           <div>支持文件导入。</div>
@@ -191,6 +184,12 @@ function OneToMany() {
                 });
               }}
             />
+
+            <Alert>
+              <ul>
+                <li>每行代表一个地址</li>
+              </ul>
+            </Alert>
 
             <FormControl isInvalid={!!errors.addresses && touched.addresses}>
               <FormLabel htmlFor="addresses">地址</FormLabel>
@@ -235,7 +234,14 @@ function OneToMany() {
               ></Field>
               <FormErrorMessage>{errors.amount}</FormErrorMessage>
             </FormControl>
-            <AirDropButton isLoading={isLoading} isDisabled={!!!errors} />
+            <AirDropButton
+              isLoading={isLoading}
+              isDisabled={
+                !values.addresses ||
+                !values.amount ||
+                Object.keys(errors).length > 0
+              }
+            />
           </form>
         )}
       </Formik>

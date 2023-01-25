@@ -9,7 +9,9 @@ const SimpleBar = dynamic(() => import("simplebar-react"), {
   ssr: false,
 });
 
-export default function Home() {
+export default dynamic(() => Promise.resolve(Home), { ssr: false });
+
+function Home() {
   if (typeof window === "undefined") return null;
   return (
     <>
