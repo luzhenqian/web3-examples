@@ -40,7 +40,10 @@ const contract = {
   abi,
 };
 
-export default dynamic(() => Promise.resolve(Airdrop), { ssr: false });
+const _Airdrop = dynamic(() => Promise.resolve(Airdrop), { ssr: false });
+// @ts-ignore
+_Airdrop.useWallet = true;
+export default _Airdrop;
 
 function Airdrop() {
   const { data: signer } = useSigner();
@@ -64,8 +67,6 @@ function Airdrop() {
 
   return (
     <div className="flex flex-col gap-8 p-8">
-      <Profile />
-
       {isOwner ? (
         <>
           <OneToMany />

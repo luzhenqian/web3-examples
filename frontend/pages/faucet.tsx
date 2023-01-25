@@ -24,12 +24,14 @@ const contract = {
   abi,
 };
 
-export default dynamic(() => Promise.resolve(Faucet), { ssr: false });
+const _Faucet = dynamic(() => Promise.resolve(Faucet), { ssr: false });
+// @ts-ignore
+_Faucet.useWallet = true;
+export default _Faucet;
 
 function Faucet() {
   return (
     <div className="flex flex-col gap-8 p-8">
-      <Profile />
       <Withdraw />
       <SetAmountEachTime />
     </div>

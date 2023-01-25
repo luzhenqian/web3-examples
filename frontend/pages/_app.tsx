@@ -9,18 +9,27 @@ import { options } from "../libs/swr";
 import "@rainbow-me/rainbowkit/styles.css";
 import "../styles/simplebar.min.css";
 import "../styles/globals.css";
+import { useRouter } from "next/router";
+import { Layout } from "../components/Layout/Layout";
+import { Fragment } from "react";
 
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
+  const router = useRouter();
+  const useLayout = router.route !== "/";
+  const ILayout = useLayout ? Layout : Fragment;
+
   return (
     <SessionProvider session={session}>
       <WagmiConfig client={client}>
         <RainbowKitProvider chains={chains}>
           <ChakraProvider>
             <SWRConfig value={options}>
-              <Component {...pageProps} />
+              <ILayout useWallet={(Component as any).useWallet}>
+                <Component {...pageProps} />
+              </ILayout>
             </SWRConfig>
           </ChakraProvider>
         </RainbowKitProvider>

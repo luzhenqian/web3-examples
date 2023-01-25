@@ -52,7 +52,10 @@ const noahNFTcontract = {
   abi,
 };
 
-export default dynamic(() => Promise.resolve(NoahNFT), { ssr: false });
+const _NoahNFT = dynamic(() => Promise.resolve(NoahNFT), { ssr: false });
+// @ts-ignore
+_NoahNFT.useWallet = true;
+export default _NoahNFT;
 
 function NoahNFT() {
   const { data: signer } = useSigner();
@@ -79,7 +82,6 @@ function NoahNFT() {
 
   return (
     <div className="flex flex-col gap-2 p-4">
-      <Profile></Profile>
       <Heading>Noah NFT</Heading>
       <Mint />
       {isMinter ? <Create /> : <CreatorRequest />}

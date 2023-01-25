@@ -17,19 +17,20 @@ import {
 } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { abi } from "../abi/NoahToken.json";
-import Profile from "../components/Profile";
 
 const contract = {
   address: process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS as `0x${string}`,
   abi,
 };
 
-export default dynamic(() => Promise.resolve(NoahToken), { ssr: false });
+const _NoahToken = dynamic(() => Promise.resolve(NoahToken), { ssr: false });
+// @ts-ignore
+_NoahToken.useWallet = true;
+export default _NoahToken;
 
 function NoahToken() {
   return (
     <div className="flex flex-col gap-8 p-8">
-      <Profile />
       <Detail />
       <BalanceOf />
       <Transfer />
