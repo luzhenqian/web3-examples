@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import examples from "../../examples.json";
 import { Icon } from "../Icon";
 import Profile from "../Profile";
+import Vivus from "vivus";
 
 function Layout({
   children,
@@ -24,8 +25,19 @@ function Layout({
                     ? "bg-gray-200 font-medium shadow-md"
                     : "text-gray-500"
                 } `}
+                onMouseEnter={() => {
+                  new Vivus(icon, {
+                    duration: 80,
+                    type: "sync",
+                    start: "autostart",
+                    dashGap: 20,
+                    forceRender: false,
+                    pathTimingFunction: Vivus.EASE_OUT,
+                    animTimingFunction: Vivus.EASE_OUT,
+                  });
+                }}
               >
-                <Icon name={icon} size={24} min={24} />
+                <Icon name={icon} size={24} min={24} id={icon} />
                 <span className="flex-1">{name}</span>
               </li>
             </Link>
