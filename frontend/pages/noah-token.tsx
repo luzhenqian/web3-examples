@@ -6,6 +6,7 @@ import {
   useContractRead,
   useContractReads,
   useContractEvent,
+  useAccount,
 } from "wagmi";
 import {
   Alert,
@@ -98,6 +99,7 @@ function BalanceOf() {
     ...contract,
     functionName: "balanceOf",
     args: [address],
+    enabled: address !== "",
   }) as any;
 
   useContractEvent({
@@ -136,6 +138,7 @@ function Transfer() {
     ...contract,
     functionName: "transfer",
     args: [address, amount],
+    enabled: address !== "" && amount > 0,
   });
 
   const {
@@ -202,7 +205,8 @@ function Approve() {
   const { config } = usePrepareContractWrite({
     ...contract,
     functionName: "approve",
-    args: [1, address, amount],
+    args: [address, amount],
+    enabled: address !== "" && amount !== 0,
   });
 
   const {
@@ -270,6 +274,7 @@ function Allowance() {
     ...contract,
     functionName: "allowance",
     args: [owner, spender],
+    enabled: owner !== "" && spender !== "",
   }) as any;
 
   useContractEvent({
@@ -312,8 +317,9 @@ function TransferFrom() {
   const { config } = usePrepareContractWrite({
     address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`,
     abi,
-    functionName: "approve",
+    functionName: "approveFrom",
     args: [from, to, amount],
+    enabled: from !== "" && to !== "" && amount !== 0,
   });
 
   const {
