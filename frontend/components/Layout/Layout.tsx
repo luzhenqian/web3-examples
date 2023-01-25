@@ -50,13 +50,13 @@ function Layout({
           ))}
         </ul>
       </nav>
-      <div className="flex-1 min-h-full bg-gray-100 shadow-lg rounded-l-[4rem]">
+      <div className="flex-1 min-h-full max-h-full bg-gray-100 shadow-lg rounded-l-[4rem] overflow-auto">
         {useWallet && (
-          <div className="flex justify-end p-4 border-b bg-slate-50 rounded-tl-[4rem]">
+          <div className="flex justify-end p-4 border-b bg-slate-50 rounded-tl-[4rem] sticky top-0 z-20">
             <Profile />
           </div>
         )}
-        <div className="p-4"> {children}</div>
+        <div className="flex-1 p-4 "> {children}</div>
       </div>
     </div>
   );
