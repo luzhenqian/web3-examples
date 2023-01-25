@@ -37,7 +37,13 @@ function Layout({
                   });
                 }}
               >
-                <Icon name={icon} size={24} min={24} id={icon} />
+                <Icon
+                  name={icon}
+                  size={24}
+                  min={24}
+                  id={icon}
+                  color={router.route === url ? "black" : "inherit"}
+                />
                 <span className="flex-1">{name}</span>
               </li>
             </Link>

@@ -130,7 +130,6 @@ function Connect() {
 
   const connectToMetamask = async () => {
     try {
-      await (window.ethereum as any).enable();
       const accounts = await walletProvider.send("eth_requestAccounts", []);
       const network = await walletProvider.getNetwork();
       const balance = await walletProvider.getBalance(accounts[0]);
