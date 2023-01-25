@@ -9,7 +9,7 @@ contract AirdropFree {
     IERC20 public tokenContract; // 代币合约
     address public owner; // 合约发布者
     address private _marketingWalletAddress; // 营销钱包地址，用于收取手续费
-    uint256 private _feeRate = 10; // 手续费比例，单位：万分之一
+    uint256 private _feeRate; // 手续费比例，单位：万分之一
 
     constructor(
         address _tokenContractAddress,

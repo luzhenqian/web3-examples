@@ -7,9 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "LuZhenqian",
+  "author": "Noah",
   "license": "ISC",
   "dependencies": {
+    "ethers": "^5.7.2",
     "fs-extra": "^11.1.0"
   }
 }
