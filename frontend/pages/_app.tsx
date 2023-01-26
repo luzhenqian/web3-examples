@@ -12,6 +12,7 @@ import { options } from "@/libs/swr";
 import "@rainbow-me/rainbowkit/styles.css";
 import "@/styles/simplebar.min.css";
 import "@/styles/globals.css";
+import { GTag } from "@/components/Gtag";
 
 export default function App({
   Component,
@@ -30,6 +31,7 @@ export default function App({
           <ChakraProvider>
             <SWRConfig value={options}>
               <ILayout useWallet={(Component as any).useWallet}>
+                <GTag />
                 <Component {...pageProps} />
               </ILayout>
             </SWRConfig>
