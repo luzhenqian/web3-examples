@@ -19,7 +19,9 @@ export default function App({
 }: AppProps) {
   const router = useRouter();
   const useLayout = router.route !== "/";
-  const ILayout = useLayout ? Layout : Fragment;
+  const ILayout = useLayout
+    ? Layout
+    : (props: any) => <Fragment>{props.children}</Fragment>;
 
   return (
     <SessionProvider session={session}>
