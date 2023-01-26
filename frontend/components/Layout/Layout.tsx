@@ -34,9 +34,8 @@ function Layout({
     });
   }, [menuVisible, setMenuVisible]);
 
-  const [bgGradient, setBgGradient] = useState<string>(
-    gradient(String(Date.now()))
-  );
+  const bgGradient = gradient(String(Date.now()));
+
   return (
     <div className="flex h-screen">
       <nav
@@ -48,7 +47,7 @@ function Layout({
             : ""
         }`}
       >
-        <ul className="flex flex-col gap-6">
+        <ul className="flex flex-col gap-2 py-2 md:gap-6">
           {examples.map(({ name, description, url, technologyStack, icon }) => (
             <Link key={name} href={url}>
               <li
@@ -100,7 +99,7 @@ function Layout({
         </Link>
       </nav>
       <div className="flex-1 min-h-full max-h-full bg-gray-100 shadow-lg md:rounded-l-[4rem] overflow-auto">
-        <div className="flex justify-between items-center p-4 border-b bg-slate-50 rounded-tl-[4rem] sticky top-0 z-20">
+        <header className="flex justify-between items-center p-4 border-b bg-slate-50 md:rounded-tl-[4rem] sticky top-0 z-20">
           <div className="md:invisible">
             {menuVisible === true ? (
               <HiOutlineX
@@ -117,7 +116,7 @@ function Layout({
             )}
           </div>
           {useWallet ? <Profile /> : <div></div>}
-        </div>
+        </header>
 
         <div className="flex-1 p-4 ">{children}</div>
       </div>
