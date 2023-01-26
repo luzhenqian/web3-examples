@@ -5,7 +5,10 @@ import { Icon } from "../Icon";
 import Profile from "../Profile";
 import Vivus from "vivus";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
+import { VscGithubAlt } from "react-icons/vsc";
 import { ReactNode, useEffect, useLayoutEffect, useState } from "react";
+// @ts-ignore
+import gradient from "random-gradient";
 
 function Layout({
   children,
@@ -30,10 +33,14 @@ function Layout({
       animTimingFunction: Vivus.EASE_OUT,
     });
   }, [menuVisible, setMenuVisible]);
+
+  const [bgGradient, setBgGradient] = useState<string>(
+    gradient(String(Date.now()))
+  );
   return (
     <div className="flex h-screen">
       <nav
-        className={`hidden w-0 p-0 md:block md:p-4 md:w-[300px] ${
+        className={`hidden w-0 p-0 md:p-4 md:w-[300px] md:flex md:flex-col md:justify-between ${
           menuVisible === true
             ? "!block !w-full fixed z-10 bg-white top-20"
             : menuVisible === false
@@ -74,6 +81,23 @@ function Layout({
             </Link>
           ))}
         </ul>
+        <Link
+          href="https://github.com/luzhenqian/web3-examples"
+          target={"_blank"}
+        >
+          <div className="relative hidden p-4 text-white transition duration-500 ease-in-out rounded-md cursor-pointer md:block">
+            <div className="relative z-10 flex items-center justify-between">
+              <VscGithubAlt size={24} />
+              <span>Github</span>
+            </div>
+            <div
+              style={{
+                background: bgGradient,
+              }}
+              className="absolute top-0 bottom-0 left-0 right-0 rounded-md -z-1"
+            ></div>
+          </div>
+        </Link>
       </nav>
       <div className="flex-1 min-h-full max-h-full bg-gray-100 shadow-lg md:rounded-l-[4rem] overflow-auto">
         <div className="flex justify-between items-center p-4 border-b bg-slate-50 rounded-tl-[4rem] sticky top-0 z-20">
@@ -95,7 +119,7 @@ function Layout({
           {useWallet ? <Profile /> : <div></div>}
         </div>
 
-        <div className="flex-1 p-4 "> {children}</div>
+        <div className="flex-1 p-4 ">{children}</div>
       </div>
     </div>
   );
