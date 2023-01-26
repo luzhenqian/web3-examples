@@ -29,7 +29,7 @@ import {
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { useAccount, useContract, useSigner } from "wagmi";
-import { abi } from "../abi/NoahNFT.json";
+import { abi } from "@/abi/NoahNFT.json";
 import { Formik, Field, FieldArray } from "formik";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";

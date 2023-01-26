@@ -4,14 +4,14 @@ import type { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
 import { SessionProvider } from "next-auth/react";
 import { SWRConfig } from "swr";
-import { chains, client } from "../libs/wagmi";
-import { options } from "../libs/swr";
-import "@rainbow-me/rainbowkit/styles.css";
-import "../styles/simplebar.min.css";
-import "../styles/globals.css";
 import { useRouter } from "next/router";
-import { Layout } from "../components/Layout/Layout";
 import { Fragment } from "react";
+import { Layout } from "@/components/Layout/Layout";
+import { chains, client } from "@/libs/wagmi";
+import { options } from "@/libs/swr";
+import "@rainbow-me/rainbowkit/styles.css";
+import "@/styles/simplebar.min.css";
+import "@/styles/globals.css";
 
 export default function App({
   Component,

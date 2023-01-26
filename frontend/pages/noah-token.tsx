@@ -6,7 +6,6 @@ import {
   useContractRead,
   useContractReads,
   useContractEvent,
-  useAccount,
 } from "wagmi";
 import {
   Alert,
@@ -17,7 +16,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
-import { abi } from "../abi/NoahToken.json";
+import { abi } from "@/abi/NoahToken.json";
 
 const contract = {
   address: process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS as `0x${string}`,

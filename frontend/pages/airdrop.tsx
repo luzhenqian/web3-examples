@@ -16,7 +16,6 @@ import {
   Heading,
   Icon,
   Input,
-  Spinner,
   Table,
   Tbody,
   Td,
@@ -27,8 +26,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
-import { abi } from "../abi/Airdrop.json";
-import Profile from "../components/Profile";
+import { abi } from "@/abi/Airdrop.json";
 import { ethers } from "ethers";
 import { useDropzone } from "react-dropzone";
 import { read, utils } from "xlsx";

@@ -7,17 +7,9 @@ import {
   useSigner,
   useAccount,
 } from "wagmi";
-import {
-  Alert,
-  Button,
-  Heading,
-  Input,
-  Spinner,
-  useToast,
-} from "@chakra-ui/react";
+import { Alert, Button, Heading, Input, useToast } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
-import { abi } from "../abi/Faucet.json";
-import Profile from "../components/Profile";
+import { abi } from "@/abi/Faucet.json";
 
 const contract = {
   address: process.env.NEXT_PUBLIC_FAUCET_CONTRACT_ADDRESS as `0x${string}`,

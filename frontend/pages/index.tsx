@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import Link from "next/link";
-import examples from "../examples.json";
+import examples from "@/examples.json";
 
 // FIXME:
 // @ts-ignore
