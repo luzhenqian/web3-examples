@@ -4,18 +4,43 @@ import examples from "../../examples.json";
 import { Icon } from "../Icon";
 import Profile from "../Profile";
 import Vivus from "vivus";
+import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
+import { ReactNode, useEffect, useLayoutEffect, useState } from "react";
 
 function Layout({
   children,
   useWallet = false,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   useWallet?: boolean;
 }) {
   const router = useRouter();
+  const [menuVisible, setMenuVisible] = useState<boolean | null>(null); // 只有移动端才会用到
+  useEffect(() => {
+    setMenuVisible(null);
+  }, [router]);
+  useLayoutEffect(() => {
+    new Vivus("menu-icon", {
+      duration: 80,
+      type: "delayed",
+      start: "autostart",
+      dashGap: 40,
+      forceRender: false,
+      pathTimingFunction: Vivus.EASE_OUT,
+      animTimingFunction: Vivus.EASE_OUT,
+    });
+  }, [menuVisible, setMenuVisible]);
   return (
     <div className="flex h-screen">
-      <nav className="w-[300px] p-4 ">
+      <nav
+        className={`hidden w-0 p-0 md:block md:p-4 md:w-[300px] ${
+          menuVisible === true
+            ? "!block !w-full fixed z-10 bg-white top-20"
+            : menuVisible === false
+            ? "!hidden !w-0"
+            : ""
+        }`}
+      >
         <ul className="flex flex-col gap-6">
           {examples.map(({ name, description, url, technologyStack, icon }) => (
             <Link key={name} href={url}>
@@ -50,12 +75,26 @@ function Layout({
           ))}
         </ul>
       </nav>
-      <div className="flex-1 min-h-full max-h-full bg-gray-100 shadow-lg rounded-l-[4rem] overflow-auto">
-        {useWallet && (
-          <div className="flex justify-end p-4 border-b bg-slate-50 rounded-tl-[4rem] sticky top-0 z-20">
-            <Profile />
+      <div className="flex-1 min-h-full max-h-full bg-gray-100 shadow-lg md:rounded-l-[4rem] overflow-auto">
+        <div className="flex justify-between items-center p-4 border-b bg-slate-50 rounded-tl-[4rem] sticky top-0 z-20">
+          <div className="md:invisible">
+            {menuVisible === true ? (
+              <HiOutlineX
+                id="menu-icon"
+                size={32}
+                onClick={() => setMenuVisible(!menuVisible)}
+              ></HiOutlineX>
+            ) : (
+              <HiOutlineMenu
+                id="menu-icon"
+                size={32}
+                onClick={() => setMenuVisible(!!!menuVisible)}
+              ></HiOutlineMenu>
+            )}
           </div>
-        )}
+          {useWallet ? <Profile /> : <div></div>}
+        </div>
+
         <div className="flex-1 p-4 "> {children}</div>
       </div>
     </div>
