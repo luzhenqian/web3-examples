@@ -17,3 +17,13 @@ body {
     @apply px-4 py-2 border-2 border-gray-300 rounded-3xl;
   }
 }
+
+.simplebar-mask {
+  border-radius: 0.5rem /* 8px */;
+}
+
+@media (min-width: 768px) {
+  .simplebar-mask {
+    border-radius: 1.5rem /* 24px */;
+  }
+}
