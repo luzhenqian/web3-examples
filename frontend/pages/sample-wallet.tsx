@@ -162,7 +162,12 @@ function Connect() {
 
   return (
     <div className="flex items-center justify-end gap-2">
-      <h1 className="text-end">Hello, {account}</h1>
+      <h1 className="text-end">
+        Hello,{" "}
+        {account.substring(0, 5) +
+          "..." +
+          account.substring(account.length - 4, account.length)}
+      </h1>
       <button className="btn" onClick={disconnect}>
         disconnect
       </button>
@@ -183,7 +188,7 @@ function Details() {
       </div>
 
       <div className="flex items-end gap-2">
-        <div className="text-2xl">{balance}</div>
+        <div className="text-2xl">{balance.substring(0, 10)}</div>
         <div>ETH</div>
       </div>
     </div>
