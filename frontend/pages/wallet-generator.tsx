@@ -36,8 +36,9 @@ export default function WalletGenerator() {
     const book = utils.book_new();
     //
     const data = wallets.map(
-      ({ address, privateKey, mnemonic: { phrase } }) => ({
+      ({ address, publicKey, privateKey, mnemonic: { phrase } }) => ({
         address,
+        publicKey,
         privateKey,
         phrase,
       })
@@ -47,6 +48,9 @@ export default function WalletGenerator() {
     sheet["!cols"] = [
       {
         wch: 50,
+      },
+      {
+        wch: 140,
       },
       {
         wch: 70,
@@ -107,6 +111,25 @@ export default function WalletGenerator() {
                       }}
                     >
                       {hasCopied && value === wallet.address
+                        ? "复制成功!"
+                        : "复制"}
+                    </Button>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <p className="w-12">公钥</p>
+                    <Input
+                      className="flex-1"
+                      value={wallet.publicKey}
+                      readOnly
+                    />
+                    <Button
+                      onClick={() => {
+                        setValue(wallet.publicKey);
+                        onCopy();
+                      }}
+                    >
+                      {hasCopied && value === wallet.publicKey
                         ? "复制成功!"
                         : "复制"}
                     </Button>
