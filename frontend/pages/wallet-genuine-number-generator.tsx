@@ -41,7 +41,7 @@ export default function WalletGenerator() {
 
   return (
     <div className="flex flex-col gap-2 p-4 ">
-      <Heading>钱包地址生成器</Heading>
+      <Heading>钱包地址靓号生成器</Heading>
       <Alert>条件越苛刻，生成速度越慢</Alert>
       <Heading size={"sm"}>输入开头号码</Heading>
       <Input
