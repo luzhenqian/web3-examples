@@ -24,6 +24,7 @@ body {
 
 @media (min-width: 768px) {
   .simplebar-mask {
-    border-radius: 1.5rem /* 24px */;
+    border-radius: 1.8rem /* 24px */;
+    border: 2px solid #e5e7eb;
   }
 }

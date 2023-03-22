@@ -39,7 +39,10 @@ function Home() {
         {/* FIXME: */}
         {/* @ts-ignore */}
         <SimpleBar className="w-full h-full rounded-lg md:rounded-3xl">
-          <div className="flex flex-col w-full h-full gap-4 p-4 overflow-auto rounded-lg shadow-sm md:gap-8 md:p-8 md:shadow-inner md:rounded-3xl md:backdrop-opacity-40 md:backdrop-invert">
+          <div
+            className="flex flex-col w-full h-full gap-4 p-4 overflow-auto rounded-lg shadow-sm md:gap-8 md:p-8 md:shadow-inner md:rounded-3xl md:bg-[rgba(0,0,0,0.4)]
+            md:backdrop-blur-[4px]"
+          >
             <div className="w-full text-3xl font-bold md:text-white">
               Web3 代码示例
             </div>
