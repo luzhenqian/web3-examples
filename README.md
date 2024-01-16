@@ -105,9 +105,9 @@ npm run dev
 - [Truffle Suite](https://trufflesuite.com/) - 包含 Truffle、Ganache 和 Drizzle 的智能合约开发环境。
 - [Ethers.js 官方文档](https://docs.ethers.org/) - 用于与智能合约交互的库。
 - [Web3.js 官方文档](https://web3js.readthedocs.io/en/) - 另一种用于智能合约交互的库。
-- [Viem.js](https://viem.sh/) - 一款智能合约交云库。
-- [Wagmi](https://wagmi.sh/) - 提供 React Hooks 风格的智能合约交互库。
-- [RainbowKit](https://www.rainbowkit.com/zh-CN/docs/introduction) - 用于构建 Web3 钱包连接界面的库。
+- [Viem.js](https://viem.sh/) - 最新的智能合约交库。
+- [Wagmi](https://wagmi.sh/) - 提供 React Hooks 风格 API 的智能合约交互库。
+- [RainbowKit](https://www.rainbowkit.com/zh-CN/docs/introduction) - 用于构建 Web3 钱包连接界面的库，支持 React。
 
 ### 书籍
 
