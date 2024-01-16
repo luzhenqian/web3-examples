@@ -16,7 +16,7 @@
 
 以下是几个可靠的科学上网工具推荐：
 
-- <https://clashvpn.net/>：免费，比较稳定。
+- <https://clashvpn.net/>：每日签到可以免费使用，也可以付费，比较稳定。
 - <https://letsvpn.world/>：价格较高，一个账号支持 2 个设备
 - <https://ghelper.app/>：价格较低，一个账号支持十几个设备
 
