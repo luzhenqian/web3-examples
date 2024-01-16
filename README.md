@@ -16,7 +16,8 @@
 
 以下是几个可靠的科学上网工具推荐：
 
-- <https://letsvpn.world/?hl=zh>：价格较高，一个账号支持 2 个设备
+- <https://clashvpn.net/>：免费，比较稳定。
+- <https://letsvpn.world/>：价格较高，一个账号支持 2 个设备
 - <https://ghelper.app/>：价格较低，一个账号支持十几个设备
 
 请注意，以上工具仅供学习使用。若利用这些工具从事违法犯罪行为，我们概不承担任何法律责任。
@@ -48,8 +49,69 @@ npm run dev
 
 ## 学习资源
 
-我们整理了一份学习资源列表，供你参考：
+为了帮助你更好的学习，我们整理了一份学习资源列表。如果你有新的资源推荐或发现列表中的资源已过时或质量不佳，请通过 issue 通知我们更新。
 
-[精选资源](/docs/awesome.md)
+### DApp & Solidity 智能合约学习资源
 
-如果你有新的资源推荐，或发现资源过期、质量不佳，请提 issue 通知我们。
+- [CryptoZombies](https://cryptozombies.io/) - 通过游戏形式学习 Solidity，非常适合初学者。
+- [CryptoZombies 中文课程](https://cryptozombies.io/zh/course/) - 加密僵尸游戏的中文课程。
+- [Ethernaut by OpenZeppelin](https://ethernaut.openzeppelin.com/) - OpenZeppelin 推出的动手学习 Solidity 的平台。
+- [Chainshot](https://www.chainshot.com/) - 通过动手实践学习智能合约开发。
+- [FreeCodeCamp Solidity Tutorial](https://www.youtube.com/watch?v=M576WGiDBdQ) - FreeCodeCamp 的 Solidity 教程视频。
+- [Ethereum 官方教程](https://ethereum.org/en/developers/tutorials/) - 以太坊官方提供的开发教程。
+- [Ethereum 文档](https://ethereum.org/en/developers/docs/) - 以太坊官方开发文档。
+- [Ethereum DApps 展示](https://ethereum.org/en/dapps/) - 以太坊官方的 DApp 展示页面。
+- [WTF Academy](https://wtf.academy/) - 从 Solidity 基础到进阶的课程。
+- [LearnWeb3.io](https://learnweb3.io/) - Web3 学习网站。
+- [Pointer](https://www.pointer.gg/) - 同样是 Web3 学习网站。
+
+### 其他综合学习资源
+
+- [Continuum](https://continuum.xyz/) - 通过学习 Web3 基础获得 NFT 奖励的学习平台。
+- [Dapp University](https://www.dappuniversity.com/) - 专注于 DApp 开发的系列教学视频。
+- [Web3 University](https://www.web3.university/find) - 内容全面的 Web3 在线学习平台。
+- [Hashnode Web3 Channel](https://web3.hashnode.com/) - Hashnode 的 Web3 专栏。
+- [Mirror Developer Platform](https://dev.mirror.xyz/) - Mirror 上集合了众多优秀的 Web3 开发者的文章。
+- [Ethereum Stack Exchange](https://ethereum.stackexchange.com/) - 官方的 Ethereum Q&A 社区。
+- [EthResearch](https://ethresear.ch/) - Ethereum 技术论坛。
+- [OpenSea Blog](https://opensea.io/blog) - OpenSea 的官方博客。
+- [Reddit Web3](https://www.reddit.com/r/web3/) - Reddit 上的 Web3 频道。
+- [Medium Web3 Topics](https://medium.com/tag/web3) - Medium 上关于 Web3 的讨论。
+
+### 区块链相关学习资源
+
+- [Coursera Blockchain Basics](https://www.coursera.org/learn/blockchain-basics) - Coursera 上的区块链基础课程。
+- [Conflux 中文区块链论坛](https://forum.conflux.fun/c/Chinese) - Conflux 论坛的中文区。
+- [Microsoft Blockchain Development Introduction](https://learn.microsoft.com/zh-cn/training/paths/ethereum-blockchain-development/) - 微软提供的区块链开发入门课程。
+- [MIT Blockchain Course](https://ocw.mit.edu/courses/15-s12-blockchain-and-money-fall-2018/video_galleries/video-lectures/) - MIT 提供的关于区块链的课程。
+
+### 白皮书
+
+以下是几个重要项目的白皮书链接：
+
+- [比特币白皮书](https://bitcoin.org/bitcoin.pdf)
+- [以太坊白皮书](https://ethereum.org/en/whitepaper/)
+- [Uniswap V2 白皮书](https://uniswap.org/whitepaper.pdf)
+- [Uniswap V3 白皮书](https://uniswap.org/whitepaper-v3.pdf)
+
+### 官方文档
+
+以下是一些常用工具和库的官方文档链接：
+
+- [Solidity 官方文档](https://docs.soliditylang.org/en/) - 智能合约编程语言。
+- [OpenZeppelin](https://www.openzeppelin.com/) - Solidity 安全开发工具库。
+- [Remix IDE 官方文档](https://remix.run/docs/en/v1) - Solidity 开发的在线 IDE。
+- [Hardhat](https://hardhat.org/) - 用于智能合约开发的环境框架。
+- [Truffle Suite](https://trufflesuite.com/) - 包含 Truffle、Ganache 和 Drizzle 的智能合约开发环境。
+- [Ethers.js 官方文档](https://docs.ethers.org/) - 用于与智能合约交互的库。
+- [Web3.js 官方文档](https://web3js.readthedocs.io/en/) - 另一种用于智能合约交互的库。
+- [Viem.js](https://viem.sh/) - 一款智能合约交云库。
+- [Wagmi](https://wagmi.sh/) - 提供 React Hooks 风格的智能合约交互库。
+- [RainbowKit](https://www.rainbowkit.com/zh-CN/docs/introduction) - 用于构建 Web3 钱包连接界面的库。
+
+### 书籍
+
+以下是一些推荐的区块链和 Web3 相关书籍：
+
+- [精通比特币](https://github.com/tianmingyun/MasterBitcoin2CN) - 对比特币深入讲解的书籍。
+- [精通以太坊](https://github.com/inoutcode/ethereum_book) - 以太坊技术深入分析的书籍。
