@@ -14,6 +14,12 @@ QnA3.ai 有币安作为背书，是一个非常有潜力的项目，未来发行
 
 1. 访问 https://qna3.ai/?code=bB55bXy2 ，使用钱包登录。开梯子可能会 501，可以尝试使用规则模式。
 
+![home](./images/home.png)
+
+![login](./images/login.png)
+
+![login](./images/sign.png)
+
 2. Chrome 浏览器中安装 QnA3 Data Mining 插件。
 
 安装地址： https://chromewebstore.google.com/detail/qna3-data-mining/aoacedpgnagknpajfblanffacibnmplp?hl=en
