@@ -18,10 +18,10 @@ QnA3.ai 有币安作为背书，是一个非常有潜力的项目，未来发行
 
 安装地址： https://chromewebstore.google.com/detail/qna3-data-mining/aoacedpgnagknpajfblanffacibnmplp?hl=en
 
-![[./images/extensions.png]]
+![extensions](./images/extensions.png)
 
 安装完成后固定在浏览器上。
 
 3. 刷新 QnA3 首页页面，会自动开始挖矿，点击浏览器插件，会弹出下图所示的界面，如果没自动开始，点击 Start 按钮挖矿。
 
-![[./images/mining.png]]
+![mining](./images/mining.png)
