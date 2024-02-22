@@ -1,0 +1,26 @@
+[
+  {
+    "index": 0,
+    "timestamp": "2024-02-18",
+    "data": "Genesis block",
+    "previousHash": "0",
+    "hash": "fad31848e83409cd68237232e83e8020534610ef98a4ae587dd66093d1a506f8",
+    "nonce": 0
+  },
+  {
+    "index": 1,
+    "timestamp": "2024-02-18",
+    "data": "{\"amount\":4}",
+    "previousHash": "fad31848e83409cd68237232e83e8020534610ef98a4ae587dd66093d1a506f8",
+    "hash": "00be5c64b833c5fde8c380667b4d3068106370ad24c288b0bfa97ce6f1c0bf03",
+    "nonce": 162
+  },
+  {
+    "index": 2,
+    "timestamp": "2024-02-18",
+    "data": "{\"amount\":10}",
+    "previousHash": "00be5c64b833c5fde8c380667b4d3068106370ad24c288b0bfa97ce6f1c0bf03",
+    "hash": "00434897f7fd492d348b7e7374cfd63bdde69af11c40bd1bffe2d5afea6be695",
+    "nonce": 87
+  }
+]
