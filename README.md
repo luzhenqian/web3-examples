@@ -142,6 +142,52 @@ npm run dev
 - [Ordinals 协议](https://docs.ordinals.com/) - BRC20 背后的铭文协议。
 - [Atomicals 协议](https://docs.atomicals.xyz) - ARC20 背后的铭文协议。
 
+## 招聘平台
+
+### 中文区
+
+- [ABetterWeb3](https://abetterweb3.notion.site/abetterweb3/daa095830b624e96af46de63fb9771b9)
+
+- [Foresight news](https://foresightnews.pro/job)
+
+- [电鸭社区](https://eleduck.com/search?keyword=web3)
+
+- [TinTin Job Board](https://attractive-spade-1e3.notion.site/37f6da2316a845fba6ff6f62f3c50289?v=e88aaffca0ee462db5e9daa53946059f)
+
+- [Rebase who is hiring](https://github.com/rebase-network/who-is-hiring/issues)
+
+- [BOSS 直聘](https://www.zhipin.com/shanghai/)
+
+- [Block Job](https://twitter.com/blockjob2022)
+
+### 英文区
+
+- [upwork](https://www.upwork.com/)
+
+- [Remote3](https://remote3.co/)
+
+- [Web3 career](https://web3.career/)
+
+- [CryptocurrencyJobs](https://cryptocurrencyjobs.co/)
+
+- [Wellfound](https://wellfound.com/)
+
+- [Crypto Recruit](https://www.cryptorecruit.com/)
+
+- [Works Hub](https://blockchain.works-hub.com/)
+
+- [Crypto job list](https://cryptojobslist.com/)
+
+- [Dejob](https://www.dejob.top/)
+
+- [Crypto Jobs](https://crypto.jobs/)
+
+- [stablegram](https://stablegram.com/)
+
+- [Froog](https://froog.co/)
+
+- [RemoteOK](https://remoteok.com/)
+
 ## 撸毛
 
 ### qna3.ai
