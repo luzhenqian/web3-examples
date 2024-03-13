@@ -188,8 +188,6 @@ npm run dev
 
 - [RemoteOK](https://remoteok.com/)
 
-## 撸毛
+## 撸毛 & 铭文
 
-### qna3.ai
-
-- [qna3.ai 挖矿教程](/docs/airdrop/qna3.md)
+现在我们成立了 bc1 社区，请访问 [bc1.wiki](https://bc1.wiki/bc1) 了解并加入我们。
