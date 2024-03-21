@@ -25,8 +25,3 @@ console.debug('Address:', address);
 console.debug('P2WPKH Address:', p2wpkhAddress);
 console.debug('Public key:', pubkey!.toString('hex'));
 console.debug('Private key:', keyPairInstance.toWIF());
-
-// Address: bc1qh2se25hxfzh4x7ntejdx6k49xvat5kunq39rpx
-// Public key: 02a85dbd2ebcbee72fc80d7812037f7ad6dd28aa2c1b51eb3f75ade2e47d208bcf
-// Private key: L1FK2B3qTg9Dyb8RneU6TdnGbot79ovNwdA7y7pDWVq9oUBknBwK
-// Mnemonic: toe hammer travel fly trip live front funny south raccoon public toilet
