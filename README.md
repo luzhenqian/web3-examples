@@ -192,3 +192,39 @@ npm run dev
 ## 撸毛 & 铭文
 
 现在我们成立了 bc1 社区，请访问 [bc1.wiki](https://bc1.wiki/bc1) 了解并加入我们。
+
+### 撸毛寻找项目 - 资讯媒体平台
+
+- [Foresight News](https://foresightnews.pro/)
+- [币安新闻](https://www.binance.com/zh-CN/square/news/all)
+- [Gate 深度](https://www.gate.io/zh/post?type=depth)
+- [陀螺科技](https://www.tuoluo.cn/kuaixun/)
+- [MarsBit 7x24H 快讯](https://news.marsbit.co/flash)
+- [Odaily 快讯](https://www.odaily.news/newsflash)
+- [律动快讯](https://www.theblockbeats.info/newsflash)
+- [PANews 快讯&深度](https://www.panewslab.com/zh/news/index.html)
+- [Chain Catcher 快讯](https://www.chaincatcher.com/news)
+- [TechFlow 7x24H 快讯](https://www.techflowpost.com/newsletter/index.html)
+
+### 撸毛寻找项目 - 空投信息网站
+
+- <https://airdrops.io/>
+- <https://dropsearn.com/airdrops/>
+- <https://www.cosmosairdrops.io/claimable>
+- <https://www.alphadrops.net/alpha>
+- <https://galxe.com/>
+
+### 撸毛项目调研 - 专业网站
+
+- <https://coinmarketcap.com/> 最大的行情网站。
+- <https://www.coingecko.com/> 也是一个非常大的行情网站。
+- <https://www.rootdata.com/> 可以查询项目的投资情况。
+- <https://geniidata.com/> 分析市场趋势的网站，特别是 Ordinals 和 BRC20 生态。
+- <https://www.coincarp.com/zh/> 也是一个大型的行情网站。
+- <https://defillama.com/> 可以查询 DeFi 协议的链上数据。
+- <https://dune.com/home> 链上数据分析和数据可视化网站，可以查询链上数据。
+
+### 项目调研 - 价值与安全
+
+- <https://app.whales.market/?r=256788> 鲸鱼市场，可以查询和交易未上市代币、积分的场外交易价格。
+- <https://gopluslabs.io/token-security> GoPlus，可以查询代币的安全性，有效避免貔貅盘。
