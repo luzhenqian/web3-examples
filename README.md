@@ -37,8 +37,8 @@
 
 以下是几个可靠的科学上网工具推荐：
 
-- <https://share.bipeiqian.cn/raf?u=89716999>：性价比高，速度可以，比较稳定。一个账号支持 5 个设备。
-- <https://bitbucket.org/letsgo666/letsgo_en_1/src/main/README.md>：价格较高，一个账号支持 2 个设备。体验较好。
+- <https://share.bipeiqian.cn/raf?u=89716999>：性价比高，速度可以，比较稳定。一个账号支持 5 个设备。使用邀请码 89716999 可以获得优惠。
+- <https://bitbucket.org/letsgo666/letsgo_en_1/src/main/README.md>：价格较高，一个账号支持 2 个设备。体验较好。使用邀请码 61922063 可以获得免费试用时长。
 - <https://nordvpn.com/zh/>：价格较高，一个账号支持 6 个设备。体验较好。国内体验一般，建议先试用。
 
 请注意，以上工具仅供学习使用。若利用这些工具从事违法犯罪行为，我们概不承担任何法律责任。
