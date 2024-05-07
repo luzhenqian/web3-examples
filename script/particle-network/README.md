@@ -25,7 +25,15 @@
 
 首先给脚本授权：`chmod +x particle-script-macos-x.y.z`，后面的 `x.y.z` 表示版本号，要根据实际情况替换。
 
-然后运行脚本：`./particle-script-macos-x.y.z`。第一次运行会请求 Accessibility 权限，需要在系统设置中手动开启。
+然后运行脚本：`./particle-script-macos-x.y.z`。第一次运行时会有一个系统提示，我们需要在系统设置中手动确认启动。
+
+![step3](./images/3.jpg)
+
+![step4](./images/4.jpg)
+
+![step5](./images/5.jpg)
+
+然后会请求 Accessibility 权限，需要在系统设置中手动开启。
 
 ![step1](./images/1.jpg)
 
@@ -37,3 +45,5 @@
 - [ ] 自定义交互金额。
 - [ ] 自定义交互次数。
 - [ ] 自定义交互间隔。
+
+有任何问题都可以在仓库中提交 issue，我有时间会尽快回复。
