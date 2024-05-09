@@ -20,10 +20,10 @@
   - [中文区](#中文区)
   - [英文区](#英文区)
 - [撸毛](#撸毛)
-  - [指纹浏览器与-IP-代理推荐](#指纹浏览器与-IP-代理推荐)
-  - [撸毛寻找项目-资讯媒体平台](#撸毛寻找项目-资讯媒体平台)
-  - [撸毛寻找项目-空投信息网站](#撸毛寻找项目-空投信息网站)
-  - [撸毛项目调研-专业网站](#撸毛项目调研-专业网站)
+  - [指纹浏览器与 IP 代理推荐](#指纹浏览器与-IP-代理推荐)
+  - [寻找项目-资讯媒体平台](#撸毛寻找项目-资讯媒体平台)
+  - [寻找项目-空投信息网站](#撸毛寻找项目-空投信息网站)
+  - [项目调研-专业网站](#撸毛项目调研-专业网站)
   - [项目调研-价值与安全](#项目调研-价值与安全)
 
 ## Web3 示例项目
@@ -206,7 +206,7 @@ clonbrowser 支持多开，自带窗口同步器，IP 绑定简单方便。
 
 [https://www.clonbrowser.net/?code=SSXf6Z](https://www.clonbrowser.net/?code=SSXf6Z)
 
-### 撸毛寻找项目-资讯媒体平台
+### 寻找项目-资讯媒体平台
 
 - [Foresight News](https://foresightnews.pro/)
 - [币安新闻](https://www.binance.com/zh-CN/square/news/all)
@@ -219,7 +219,7 @@ clonbrowser 支持多开，自带窗口同步器，IP 绑定简单方便。
 - [Chain Catcher 快讯](https://www.chaincatcher.com/news)
 - [TechFlow 7x24H 快讯](https://www.techflowpost.com/newsletter/index.html)
 
-### 撸毛寻找项目-空投信息网站
+### 寻找项目-空投信息网站
 
 - <https://airdrops.io/>
 - <https://dropsearn.com/airdrops/>
@@ -227,7 +227,7 @@ clonbrowser 支持多开，自带窗口同步器，IP 绑定简单方便。
 - <https://www.alphadrops.net/alpha>
 - <https://galxe.com/>
 
-### 撸毛项目调研-专业网站
+### 项目调研-专业网站
 
 - <https://coinmarketcap.com/> 最大的行情网站。
 - <https://www.coingecko.com/> 也是一个非常大的行情网站。
