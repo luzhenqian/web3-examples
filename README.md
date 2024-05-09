@@ -25,6 +25,8 @@
   - [寻找项目-空投信息网站](#寻找项目-空投信息网站)
   - [项目调研-专业网站](#项目调研-专业网站)
   - [项目调研-价值与安全](#项目调研-价值与安全)
+- [脚本](#脚本)
+  - [particle-network](#particle-network)
 
 ## Web3 示例项目
 
@@ -241,3 +243,9 @@ clonbrowser 支持多开，自带窗口同步器，IP 绑定简单方便。
 
 - <https://app.whales.market/?r=256788> 鲸鱼市场，可以查询和交易未上市代币、积分的场外交易价格。
 - <https://gopluslabs.io/token-security> GoPlus，可以查询代币的安全性，有效避免貔貅盘。
+
+## 脚本
+
+### particle-network
+
+- [particle-network](./script/particle-network)
