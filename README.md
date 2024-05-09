@@ -3,7 +3,7 @@
 - [Web3 示例项目](#web3-示例项目)
   - [在线预览](#在线预览)
   - [社区交流](#社区交流)
-  - [VPN 推荐](#VPN 推荐)
+  - [VPN 推荐](#VPN-推荐)
   - [环境准备](#环境准备)
   - [本地运行](#本地运行)
     - [前端](#前端)
@@ -20,6 +20,11 @@
   - [中文区](#中文区)
   - [英文区](#英文区)
 - [撸毛](#撸毛)
+  - [指纹浏览器与-IP-代理推荐](#指纹浏览器与-IP-代理推荐)
+  - [撸毛寻找项目-资讯媒体平台](#撸毛寻找项目-资讯媒体平台)
+  - [撸毛寻找项目-空投信息网站](#撸毛寻找项目-空投信息网站)
+  - [撸毛项目调研-专业网站](#撸毛项目调研-专业网站)
+  - [项目调研-价值与安全](#项目调研-价值与安全)
 
 ## Web3 示例项目
 
@@ -33,7 +38,7 @@
 
 如果你对 Web3 感兴趣，想从事 Web3 开发或探讨相关话题，请添加 Web3 布道师 Noah 的微信：`LZQ20130415`，将邀请你加入高质量的 Web3 交流群。
 
-### VPN 推荐
+### VPN-推荐
 
 以下是几个可靠的科学上网工具推荐：
 
@@ -195,7 +200,13 @@ npm run dev
 
 现在我们成立了 bc1 社区，请访问 [bc1.wiki](https://bc1.wiki/bc1) 了解并加入我们。
 
-### 撸毛寻找项目 - 资讯媒体平台
+### 指纹浏览器与-IP-代理推荐
+
+clonbrowser 支持多开，自带窗口同步器，IP 绑定简单方便。
+
+[https://www.clonbrowser.net/?code=SSXf6Z](https://www.clonbrowser.net/?code=SSXf6Z)
+
+### 撸毛寻找项目-资讯媒体平台
 
 - [Foresight News](https://foresightnews.pro/)
 - [币安新闻](https://www.binance.com/zh-CN/square/news/all)
@@ -208,7 +219,7 @@ npm run dev
 - [Chain Catcher 快讯](https://www.chaincatcher.com/news)
 - [TechFlow 7x24H 快讯](https://www.techflowpost.com/newsletter/index.html)
 
-### 撸毛寻找项目 - 空投信息网站
+### 撸毛寻找项目-空投信息网站
 
 - <https://airdrops.io/>
 - <https://dropsearn.com/airdrops/>
@@ -216,7 +227,7 @@ npm run dev
 - <https://www.alphadrops.net/alpha>
 - <https://galxe.com/>
 
-### 撸毛项目调研 - 专业网站
+### 撸毛项目调研-专业网站
 
 - <https://coinmarketcap.com/> 最大的行情网站。
 - <https://www.coingecko.com/> 也是一个非常大的行情网站。
@@ -226,7 +237,7 @@ npm run dev
 - <https://defillama.com/> 可以查询 DeFi 协议的链上数据。
 - <https://dune.com/home> 链上数据分析和数据可视化网站，可以查询链上数据。
 
-### 项目调研 - 价值与安全
+### 项目调研-价值与安全
 
 - <https://app.whales.market/?r=256788> 鲸鱼市场，可以查询和交易未上市代币、积分的场外交易价格。
 - <https://gopluslabs.io/token-security> GoPlus，可以查询代币的安全性，有效避免貔貅盘。
