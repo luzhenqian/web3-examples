@@ -2,7 +2,7 @@
 
 - [x] MacOS
 
-- [ ] Windows
+- [x] Windows
 
 ## 支持分辨率
 
@@ -80,7 +80,8 @@
     "sign": 2000,
     "refresh": 5000
   },
-  "repeatTimes": 100
+  "repeatTimes": 100,
+  "amount": 0.0001
 }
 ```
 
@@ -90,12 +91,13 @@
 
 - `repeatTimes` 表示重复运行次数。
 
+- `amount` 表示交互金额。
+
 配置好配置文件后，可以通过 `-c` 参数传入配置文件路径，例如：`./particle-script-macos-x.y.z -c particle.config.json`。
 
 ## 更多功能
 
-- [ ] 自定义输入钱包。
-- [ ] 自定义交互金额。
+- [x] 自定义交互金额。
 - [x] 自定义交互次数。
 - [x] 自定义交互间隔。
 - [x] 支持自定义元素坐标点。
