@@ -20,6 +20,7 @@
   - [中文区](#中文区)
   - [英文区](#英文区)
 - [撸毛](#撸毛)
+  - [测试网水龙头](#测试网水龙头)
   - [指纹浏览器与 IP 代理推荐](#指纹浏览器与-IP-代理推荐)
   - [寻找项目-资讯媒体平台](#寻找项目-资讯媒体平台)
   - [寻找项目-空投信息网站](#寻找项目-空投信息网站)
@@ -201,6 +202,22 @@ npm run dev
 ## 撸毛
 
 现在我们成立了 bc1 社区，请访问 [bc1.wiki](https://bc1.wiki/bc1) 了解并加入我们。
+
+### 测试网水龙头
+
+- <https://sepolia-faucet.pk910.de/> - 挖矿
+
+- <https://www.alchemy.com/faucets/ethereum-sepolia> - Alchemy 的 Ethereum 水龙头
+
+- <https://www.infura.io/faucet/sepolia> - Infura 的 Ethereum 水龙头
+
+- <https://faucet.quicknode.com/ethereum/sepolia/> - QuickNode 的 Ethereum 水龙头
+
+- <https://faucet.polygon.technology/> - Polygon
+
+- <https://www.bsquared.network/faucet/> - B2 Network
+
+- <https://www.bnbchain.org/en/testnet-faucet> - Binance Smart Chain
 
 ### 指纹浏览器与-IP-代理推荐
 
