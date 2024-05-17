@@ -281,7 +281,7 @@ clonbrowser 支持多开，自带窗口同步器，IP 绑定简单方便。
 
 已开通币安联盟合作伙伴，现货合约均可享受最高等级 20% 返佣。
 
-### 芝麻-gate
+### 芝麻-Gate
 
 芝麻 Gate 邀请码：`AlBNUAhe` 或 `BITCNOAH`。Gate 官网：[https://www.gate.io/signup/AlBNUAhe?ref_type=103](https://www.gate.io/signup/AlBNUAhe?ref_type=103)
 
