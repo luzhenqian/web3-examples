@@ -28,6 +28,12 @@
   - [项目调研-价值与安全](#项目调研-价值与安全)
 - [脚本](#脚本)
   - [particle-network](#particle-network)
+- [交易所注册手续费减免](#交易所注册手续费减免)
+  - [币安 Binance](#币安-Binance)
+  - [芝麻 Gate](#芝麻-Gate)
+  - [欧易 OKX](#欧易-OKX)
+  - [Bitget](#Bitget)
+  - [深币 DeepCoin](#深币-Deepcoin)
 
 ## Web3 示例项目
 
@@ -45,7 +51,7 @@
 
 以下是几个可靠的科学上网工具推荐：
 
-- <https://share.ahagame.top/raf?u=89716999>：性价比高，速度可以，比较稳定。一个账号支持 5 个设备。使用邀请码 89716999 可以获得优惠。
+- <https://share.jsq888.com/raf?u=89716999>：性价比高，速度可以，比较稳定。一个账号支持 5 个设备。使用邀请码 89716999 可以获得优惠。
 - <https://bitbucket.org/letsgo666/letsgo_en_1/src/main/README.md>：价格较高，一个账号支持 2 个设备。体验较好。使用邀请码 61922063 可以获得免费试用时长。
 
 请注意，以上工具仅供学习使用。若利用这些工具从事违法犯罪行为，我们概不承担任何法律责任。
@@ -266,3 +272,35 @@ clonbrowser 支持多开，自带窗口同步器，IP 绑定简单方便。
 ### particle-network
 
 - [particle-network](./script/particle-network)
+
+## 交易所注册手续费减免
+
+### 币安-Binance
+
+币安 Binance 邀请码：`DYE5M7LZ`。币安官网：[https://www.binance.info/zh-CN/join?ref=DYE5M7LZ](https://www.binance.info/zh-CN/join?ref=DYE5M7LZ)
+
+已开通币安联盟合作伙伴，现货合约均可享受最高等级 20% 返佣。
+
+### 芝麻-gate
+
+芝麻 Gate 邀请码：`AlBNUAhe` 或 `BITCNOAH`。Gate 官网：[https://www.gate.io/signup/AlBNUAhe?ref_type=103](https://www.gate.io/signup/AlBNUAhe?ref_type=103)
+
+已开通 Gate 最高级别合伙人，现货合约均可享受最高等级 20% 返佣。
+
+### 欧易-OKX
+
+欧易 OKX 邀请码：`NOAH666`。OKX 官网：[https://www.yyjiagou.com/join/noah666](https://www.yyjiagou.com/join/noah666)
+
+已开通 OKX 节点，现货合约均可享受最高等级 20% 返佣。
+
+### Bitget
+
+Bitget 邀请码：`bc1666`。Bitget 官网：[https://partner.bitget.fit/bg/bc1666](https://partner.bitget.fit/bg/bc1666)
+
+已开通 Bitget 1 级合伙人，现货合约均可享受最高等级 20% 返佣。
+
+### 深币-DeepCoin
+
+深币 DeepCoin 邀请码：`S510498`。DeepCoin 官网：[https://s.deepcoin.com/sfbaeji](https://s.deepcoin.com/sfbaeji)
+
+已开通 DeepCoin 高级合伙人，现货合约均可享受最高等级 30% 返佣。
