@@ -33,6 +33,7 @@
   - [芝麻 Gate](#芝麻-Gate)
   - [欧易 OKX](#欧易-OKX)
   - [Bitget](#Bitget)
+  - [火币 HTX](#火币-HTX)
   - [深币 DeepCoin](#深币-Deepcoin)
 
 ## Web3 示例项目
@@ -299,7 +300,7 @@ Bitget 邀请码：`bc1666`。Bitget 官网：[https://partner.bitget.fit/bg/bc1
 
 已开通 Bitget 1 级合伙人，现货合约均可享受最高等级 20% 返佣。
 
-### 火币 HTX
+### 火币-HTX
 
 火币 HTX 邀请码：`s2r99223`。火币官网：[https://www.htx.co.zw/invite/zh-cn/1h?invite_code=s2r99223](https://www.htx.co.zw/invite/zh-cn/1h?invite_code=s2r99223)
 
