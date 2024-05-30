@@ -267,6 +267,7 @@ clonbrowser 支持多开，自带窗口同步器，IP 绑定简单方便。
 
 - <https://app.whales.market/?r=256788> 鲸鱼市场，可以查询和交易未上市代币、积分的场外交易价格。
 - <https://gopluslabs.io/token-security> GoPlus，可以查询代币的安全性，有效避免貔貅盘。
+- <https://www.oklink.com/zh-hans/approval> OKX 钱包授权检测。
 
 ## 脚本
 
