@@ -52,6 +52,7 @@
 
 以下是几个可靠的科学上网工具推荐：
 
+- <https://www.taozijichang.xyz/#/register?code=nBCHS0pq>：性价比最高，很稳定，非常推荐。可以配合 SSR、Clash、Shadowrocket V2Ray 等客户端使用。
 - <https://share.jsq888.com/raf?u=89716999>：性价比高，速度可以，比较稳定。一个账号支持 5 个设备。使用邀请码 89716999 可以获得优惠。
 - <https://bitbucket.org/letsgo666/letsgo_en_1/src/main/README.md>：价格较高，一个账号支持 2 个设备。体验较好。使用邀请码 61922063 可以获得免费试用时长。
 
