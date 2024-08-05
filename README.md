@@ -46,13 +46,15 @@
 
 ### 社区交流
 
-如果你对 Web3 感兴趣，想从事 Web3 开发或探讨相关话题，请添加 Noah 助理微信：`harmony_noah`，将邀请你加入高质量的 Web3 交流群。
+如果你对 Web3 感兴趣，想从事 Web3 开发或探讨相关话题，请加入 Noah 的人人都会 Web 社区: https://t.me/everyonesweb3
+
+或者添加 Noah 的微信：`LZQ20130415`。
 
 ### VPN-推荐
 
 以下是几个可靠的科学上网工具推荐：
 
-- <https://www.taozijichang.xyz/#/register?code=nBCHS0pq>：性价比最高，很稳定，非常推荐。可以配合 SSR、Clash、Shadowrocket V2Ray 等客户端使用。
+- <https://www.taozijichang.xyz/#/register?code=nBCHS0pq>：性价比最高，很稳定，非常推荐。可以配合 SSR、Clash、Shadowrocket、V2Ray 等客户端使用。
 - <https://share.jsq888.com/raf?u=89716999>：性价比高，速度可以，比较稳定。一个账号支持 5 个设备。使用邀请码 89716999 可以获得优惠。
 - <https://bitbucket.org/letsgo666/letsgo_en_1/src/main/README.md>：价格较高，一个账号支持 2 个设备。体验较好。使用邀请码 61922063 可以获得免费试用时长。
 
@@ -228,6 +230,10 @@ npm run dev
 - <https://www.bnbchain.org/en/testnet-faucet> - Binance Smart Chain
 
 ### 指纹浏览器与-IP-代理推荐
+
+MoreLogin。
+
+[https://www.morelogin.com/?from=AA3jnj3sJxy4](https://www.morelogin.com/?from=AA3jnj3sJxy4)
 
 clonbrowser 支持多开，自带窗口同步器，IP 绑定简单方便。
 
