@@ -157,6 +157,7 @@ npm run dev
 
 - [精通比特币](https://github.com/tianmingyun/MasterBitcoin2CN) - 对比特币深入讲解的书籍。
 - [精通以太坊](https://github.com/inoutcode/ethereum_book) - 以太坊技术深入分析的书籍。
+- [How to Defi](https://nigdaemon.gitbook.io/how-to-defi-advanced-zhogn-wen-b) - DeFi 技术深入分析的书籍。
 
 ### 铭文协议
 
@@ -319,3 +320,9 @@ Bitget 邀请码：`bc1666`。Bitget 官网：[https://partner.bitget.fit/bg/bc1
 深币 DeepCoin 邀请码：`S510498`。DeepCoin 官网：[https://s.deepcoin.com/sfbaeji](https://s.deepcoin.com/sfbaeji)
 
 已开通 DeepCoin 高级合伙人，现货合约均可享受最高等级 30% 返佣。
+
+## U 卡
+
+如果你想使用加密货币进行消费。推荐使用 PokePay，Noah 已开通 KOL 专属邀请链接，注册就送 12.8 USDT 开卡抵扣券：
+
+<https://app.pokepay.cc/pages/passport/invitation?r=162465>
