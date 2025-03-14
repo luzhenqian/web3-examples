@@ -89,6 +89,13 @@ npm run dev
 
 然后，你可以使用 `truffle` 进行智能合约开发。
 
+## Solana 训练营
+
+Noah 近期上线了 Solana 全栈训练营。如果你对 Solana 开发感兴趣，欢迎加入我们的训练营。报名费：1024USDT，报名方式：添加 Noah
+的微信 `LZQ20130415`。
+
+Solana 训练营官网： [https://soldevcamp.com](https://soldevcamp.com/)
+
 ## TMA 训练营
 
 Noah 近期上线了 Telegram Mini Apps 全栈训练营。如果你对 TMA 开发感兴趣，欢迎加入我们的训练营。报名费：299 元，报名方式：添加 Noah 的微信 `LZQ20130415`。
@@ -328,6 +335,12 @@ Bitget 邀请码：`bc1666`。Bitget 官网：[https://partner.bitget.fit/bg/bc1
 深币 DeepCoin 邀请码：`S510498`。DeepCoin 官网：[https://s.deepcoin.com/sfbaeji](https://s.deepcoin.com/sfbaeji)
 
 已开通 DeepCoin 高级合伙人，现货合约均可享受最高等级 30% 返佣。
+
+### XT
+
+XT 邀请码：`NOAH`。XT 官网：[https://www.xt.com/zh-CN/accounts/register?ref=NOAH](https://www.xt.com/zh-CN/accounts/register?ref=NOAH)
+
+已开通 XT 最高返佣，现货合约均可享受最高等级 80% 返佣。
 
 ## U 卡
 
