@@ -91,7 +91,7 @@ npm run dev
 
 ## Solana 训练营
 
-Noah 近期上线了 Solana 全栈训练营。如果你对 Solana 开发感兴趣，欢迎加入我们的训练营。报名费：1024USDT，报名方式：添加 Noah
+Noah 近期上线了 Solana 全栈训练营。如果你对 Solana 开发感兴趣，欢迎加入我们的训练营。报名费：2048USDT，报名方式：添加 Noah
 的微信 `LZQ20130415`。
 
 Solana 训练营官网： [https://soldevcamp.com](https://soldevcamp.com/)

@@ -4,6 +4,7 @@
     "@ton/ton": "^15.1.0"
   },
   "devDependencies": {
+    "@types/bn.js": "^5.2.0",
     "@types/node": "^22.8.2"
   }
 }
