@@ -40,6 +40,28 @@
 
 本仓库包含了一系列涵盖前端、智能合约和后端的 Web3 示例代码，旨在帮助开发者快速学习和应用到实际项目中。我们提供了多种常用场景的示例代码。
 
+### 项目结构
+
+项目已按区块链类型重新组织，目录结构如下：
+
+```
+web3-examples/
+├── ethereum/          # 以太坊相关项目
+│   ├── contract/     # 智能合约（Noah Token, Noah NFT 等）
+│   ├── frontend/     # Web 前端应用
+│   └── mock/         # 测试数据
+├── bitcoin/          # 比特币相关项目
+│   └── bitcoinjs-lib/  # Bitcoin.js 示例
+├── solana/           # Solana 相关项目
+│   └── solana-pyth-price-feeds/  # Solana Pyth 价格预言机 DApp
+├── ton/              # TON 相关项目
+│   └── wallet/       # TON 钱包
+├── blockchain/       # 通用区块链概念教学代码
+├── script/           # 实用脚本
+├── docs/             # 文档
+└── assets/           # 资源文件
+```
+
 ### 在线预览
 
 预览地址：[https://examples.web3doc.xyz](https://examples.web3doc.xyz/)
@@ -66,9 +88,11 @@
 
 ## 本地运行
 
-### 前端
+### 以太坊项目
 
-前端代码位于 `frontend` 目录下。在运行之前，请确保完成以下准备工作：
+#### 前端
+
+前端代码位于 `ethereum/frontend` 目录下。在运行之前，请确保完成以下准备工作：
 
 1. 将 `.env.example` 文件重命名为 `.env`，并补充完整配置信息。
 2. 至少在 [alchemy](https://www.alchemy.com/) 上申请一个 API Key。
@@ -76,18 +100,31 @@
 接下来，安装依赖并启动项目：
 
 ```bash
+cd ethereum/frontend
 npm i
 npm run dev
 ```
 
-### 智能合约
+#### 智能合约
 
-智能合约代码位于 `contract` 目录下。在运行之前，请确保完成以下准备工作：
+智能合约代码位于 `ethereum/contract` 目录下。在运行之前，请确保完成以下准备工作：
 
 1. 将 `.env.example` 文件重命名为 `.env`，并补充完整配置信息。
 2. 至少在 [infura](https://www.infura.io/) 上申请一个 Project Key。
 
 然后，你可以使用 `truffle` 进行智能合约开发。
+
+### Solana 项目
+
+Solana 项目代码位于 `solana/solana-pyth-price-feeds` 目录下。
+
+### Bitcoin 项目
+
+Bitcoin 项目代码位于 `bitcoin/bitcoinjs-lib` 目录下。
+
+### TON 项目
+
+TON 项目代码位于 `ton/wallet` 目录下。
 
 ## Solana 训练营
 
