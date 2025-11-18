@@ -45,12 +45,6 @@ export async function postPriceUpdate(
   // 例如: 11.5 -> 11, 100.99 -> 100
   const amountInteger = Math.floor(amount);
 
-  console.log("发送交易参数:", {
-    wallet: wallet.publicKey.toString(),
-    destination: destination.toString(),
-    amount: amountInteger
-  });
-
   // 初始化 Hermes 客户端
   const hermesClient = new HermesClient(HERMES_URL);
 
