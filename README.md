@@ -194,6 +194,7 @@ TON 项目代码位于 `ton/wallet` 目录下。
 - [Stablegram](https://stablegram.com/)
 - [Froog](https://froog.co/)
 - [RemoteOK](https://remoteok.com/)
+- [Maneki](https://maneki.work/)
 
 ## 测试网水龙头
 
